@@ -1,0 +1,330 @@
+Build the complete course from @course-outline.md.
+
+Use the outline as the authoritative source of truth and create all generated materials under `courseware/`.
+
+Act as the **Courseware Orchestrator** and run the complete multi-agent course-development workflow. Do not behave as a single content-generation agent. Delegate work to the specialized agents, use workspace files as shared state, review their outputs, require revisions, and keep moving until the course is classroom-ready.
+
+# LABS ARE A MAJOR PRIORITY
+
+This should be a **lab-heavy, experiment-heavy course**, not a lecture course with a few exercises attached.
+
+Default target, unless the outline or pacing clearly argues otherwise:
+
+- **3–4 substantial hands-on labs per day**
+- **2–4 additional micro-experiments, visual demos, debugging challenges, or prediction activities per day**
+- At least one meaningful hands-on interaction for every major technical concept
+
+Do not inflate the lab count with tiny mechanical exercises. Prefer fewer substantial labs over meaningless activity, but actively look for opportunities to turn explanation into experimentation.
+
+Labs must be **detailed enough that someone can run them without guessing**. They should include, where relevant:
+
+- Clear purpose and learning objectives
+- Expected duration
+- Environment and prerequisite checks
+- Exact setup steps
+- Detailed step-by-step instructions
+- Starter code rather than only completed code
+- Explanation of what each major step is doing
+- Prediction questions BEFORE important cells are run
+- Expected outputs, metric ranges, or sanity checks
+- Plots and visualizations where they improve understanding
+- Interpretation questions after results appear
+- Deliberately broken examples and troubleshooting tasks
+- Common mistakes and recovery guidance
+- Challenge sections that require decisions rather than copying
+- Optional stretch experiments
+- Key takeaways
+- Instructor notes where a live demonstration could fail or take too long
+- No completed answers in participant materials; every substantial lab must have a separate instructor-only solution artifact generated and tested after the participant lab passes QA
+
+The preferred lab learning loop is:
+
+**Observe → Predict → Modify → Run → Visualize → Diagnose → Explain → Extend**
+
+Avoid labs whose primary activity is copying completed code and clicking Run.
+
+# MAKE THE LABS INTERESTING
+
+Actively incorporate activities such as:
+
+- **Predict Before You Run** — participants commit to an expected result before execution
+- **Break It / Fix It** — intentionally broken models that must be diagnosed
+- **Model Detective** — diagnose a problem from learning curves, metrics, outputs, or errors without seeing all the code
+- **Make It Overfit** — deliberately produce overfitting and then rescue the model
+- **Learning Rate Roulette** — predict which training runs will converge, oscillate, diverge, or crawl
+- **Before/After Learning Curves** — every intervention must be justified using evidence
+- **Transfer Learning Race** — compare training from scratch with adapting a pretrained model
+- **Find the Data Leak** — investigate suspiciously good model performance
+- **You Get One Experiment** — select a single intervention under a compute/time constraint and defend it before running
+- **Data vs. Model Challenge** — determine whether improving data or architecture yields more value
+- **Accuracy Isn't Enough** — expose cases where aggregate accuracy hides dangerous or expensive failures
+- **Speed vs. Quality** — compare models with similar predictive quality but different latency, size, or memory requirements
+- **Mystery Model** — infer what went wrong from behavior and evidence
+
+Use competition carefully: reward reasoning, diagnosis, reproducibility, and explanation—not merely the highest metric.
+
+# ORCHESTRATION WORKFLOW
+
+## 1. Course Architect
+Invoke the **Course Architect** first.
+
+Ask it to:
+- Analyze the entire outline
+- Create `courseware/00-course-blueprint.md`
+- Map objectives to lessons, labs, challenges, and assessments
+- Create a realistic timing map for all four days
+- Identify prerequisites and concept dependencies
+- Identify overloaded or underdeveloped sections
+- Identify where visual demonstrations are essential
+- Explicitly propose the lab plan for each day, including major labs and micro-experiments
+- Ensure the lab density is compatible with live delivery rather than simply adding content
+
+Do not proceed until the blueprint is coherent.
+
+## 2. Insight Generator
+Invoke the **Insight Generator** after the blueprint exists.
+
+Ask it to create `courseware/01-insight-map.md` containing:
+- Memorable explanations and analogies
+- Surprising but accurate insights
+- Strong visual metaphors
+- Real-world ML engineering connections
+- Frontier ML engineering connections where appropriate
+- Predict-before-you-run opportunities
+- Misconceptions worth deliberately exposing
+- Experiments that produce visually obvious outcomes
+- Interesting comparisons participants can debate before running them
+- Claims requiring current-source verification
+
+Use these insights to strengthen both lessons AND labs.
+
+## 3. Lesson Developer
+For each day/module, invoke the **Lesson Developer**.
+
+Provide:
+- The relevant outline section
+- Blueprint section
+- Insight-map recommendations
+- Associated lab plan
+- Target output path
+
+Ask it to create instructor-ready material that emphasizes:
+
+**Explain → Visualize → Predict → Experiment → Observe → Diagnose → Explain Why**
+
+Include:
+- Instructor talking points
+- Visuals/diagrams to create
+- Live demos
+- Questions to ask
+- Misconceptions
+- Transitions
+- Knowledge checks
+- Lab setup/context so the lab feels integrated into the lesson rather than bolted on afterward
+
+Avoid long stretches of passive explanation.
+
+## 4. Lab Engineer
+For every major hands-on activity, invoke the **Lab Engineer**.
+
+The Lab Engineer must create detailed, runnable, interesting labs—not sketches or high-level lab ideas.
+
+Where appropriate, require:
+- Notebook or runnable code artifact
+- Starter version
+- Lab guide
+- Expected results
+- Troubleshooting notes
+- Deliberate failure mode
+- Prediction prompts
+- Visual output
+- Challenge/extension
+- Runtime/environment notes
+
+Prefer small datasets and runtimes appropriate for a live class. Unless the course explicitly requires otherwise, keep labs practical for Google Colab and provide CPU fallbacks when reasonable.
+
+## 5. Lab Tester — PARTICIPANT EXECUTION IS REQUIRED
+After the Lab Engineer creates a lab, invoke the **Lab Tester**.
+
+The Lab Tester must **actually execute the lab**, not simply inspect the code.
+
+Require it to:
+- Test setup from a clean/minimally contaminated environment
+- Run notebooks in intended order
+- Execute the participant path
+- Validate imports and dependencies
+- Validate expected outputs and metric sanity ranges
+- Validate data/file paths
+- Validate CPU/GPU assumptions
+- Validate deliberate failures and documented recovery steps
+- Check runtime and memory practicality
+- Check Google Colab practicality where applicable
+- Confirm prediction questions occur before answers/results are revealed
+- Confirm challenges are solvable
+- Rate the lab's interestingness
+- Create a detailed validation report under `courseware/reviews/`
+
+A lab that only *looks* correct is not complete.
+
+Use these statuses:
+
+**PASS** — classroom-ready  
+**PASS WITH NOTES** — executable with non-blocking improvements  
+**FAIL** — likely to block participants or misses the objective  
+**NOT EXECUTABLE** — could not fully run because of a documented external limitation
+
+If a required lab receives **FAIL**:
+
+**Lab Tester → report → Lab Engineer fixes → Lab Tester retests**
+
+Repeat until it passes or an external limitation is explicitly documented.
+
+Do not allow the Course Reviewer to substitute for Lab Tester execution.
+
+## 6. Lab Solution Engineer — SEPARATE INSTRUCTOR SOLUTIONS + EXECUTION
+After a participant lab passes Lab Tester validation, invoke the **Lab Solution Engineer**.
+
+Every substantial lab must have a separate instructor-only solution artifact. Participant materials must never contain completed answers, hidden solution code, answer keys, or instructor-only notes.
+
+Require the Lab Solution Engineer to:
+- Read the final participant lab and its objectives
+- Create the solution under `courseware/instructor-solutions/<day-or-module>/`
+- Mirror the participant lab name using a clear suffix such as `-SOLUTION`
+- Complete every TODO, exercise, challenge, debugging task, prediction question, and interpretation question
+- Explain why each important answer is correct
+- Include expected outputs, plots, metric ranges, and qualitative behavior
+- Include common wrong answers and misconceptions
+- Include instructor demo/recovery notes
+- Note acceptable alternative solutions where appropriate
+- Actually execute the complete solution end-to-end
+- Restart and rerun from clean state when practical
+- Validate imports, dependencies, file paths, tensor shapes, outputs, plots, metrics, runtime, and CPU/GPU assumptions
+- Validate deliberate failures and the documented fix
+- Confirm the solution reaches the stated learning objective
+- Confirm no answers leaked into participant-facing files
+- Write `courseware/reviews/solution-validation-<lab-name>.md`
+
+Use statuses:
+
+**PASS** — complete, executable, separated, instructor-ready  
+**PASS WITH NOTES** — works with non-blocking recommendations  
+**FAIL** — incorrect/incomplete, execution failure, missing answers, or answer leakage  
+**NOT EXECUTABLE** — external limitation prevents full execution and is documented
+
+If the solution itself fails:
+
+**Lab Solution Engineer → fix → rerun**
+
+If the correct solution exposes a flaw in the participant lab:
+
+**Lab Solution Engineer → Orchestrator → Lab Engineer fixes participant lab → Lab Tester retests → Lab Solution Engineer reconciles and reruns solution**
+
+A required lab is not complete until:
+
+**Participant Lab PASS + Instructor Solution PASS**
+
+## 7. Pedagogy Reviewer
+After each complete day or major module has lesson material and validated labs, invoke the **Pedagogy Reviewer**.
+
+Review for:
+- Cognitive load
+- Concept sequencing
+- Scaffolded difficulty
+- Engagement
+- Active learning
+- Quality and frequency of labs
+- Whether labs reinforce the lesson objectives
+- Whether participants must think, predict, diagnose, and explain
+- Whether there is too much passive lecture between activities
+- Whether competition strengthens learning rather than distracting from it
+- Whether the course gradually removes scaffolding as capability grows
+
+Require actionable findings using labels such as:
+
+**KEEP / CUT / SHORTEN / MOVE / ADD LAB / ADD ACTIVITY / ADD VISUAL / ADD PRACTICE / CLARIFY**
+
+Apply worthwhile changes rather than merely storing the report.
+
+## 8. Course Reviewer
+After all days have been developed, lab-tested, pedagogy-reviewed, and revised, invoke the **Course Reviewer**.
+
+Review the complete `courseware/` tree for:
+- Alignment to `course-outline.md`
+- Technical accuracy
+- Modern ML/deep-learning practices
+- Coherence across four days
+- Timing and density
+- Repetition
+- Missing prerequisite concepts
+- Missing hands-on practice
+- Lab variety
+- Participant lab validation status
+- Instructor solution coverage and solution validation status
+- Clean separation between participant and instructor artifacts
+- Quality of assessments
+- Unsupported or time-sensitive claims
+- Whether the final capstone genuinely synthesizes the course
+
+Write `courseware/99-final-quality-report.md`.
+
+If blocking/high-severity issues remain, invoke the appropriate agent, fix them, and run the required review/test again.
+
+# MODERN ML ENGINEERING CONNECTIONS
+
+Throughout the course, connect foundational concepts to representative problems an ML engineer at a frontier AI organization might work on, such as:
+
+- Training and post-training
+- Evaluation and graders
+- Reinforcement learning
+- Model debugging
+- Data quality and data pipelines
+- Fine-tuning and transfer learning
+- Model behavior analysis
+- Interpretability
+- Safety evaluations
+- Training efficiency
+- Inference latency and throughput
+- GPU utilization and memory constraints
+- Experiment design
+- Diagnosing regressions
+- Improving reasoning, coding, or tool-use capabilities
+
+Keep these grounded and understandable. They should make foundational concepts feel relevant without turning the course into an LLM-only course.
+
+# QUALITY BAR
+
+Every major section should help answer:
+
+- What is this?
+- Why does it matter?
+- How does it work?
+- Can I see it?
+- Can I predict what will happen?
+- Can I experiment with it?
+- What can go wrong?
+- Can I diagnose the problem from evidence?
+- How would an ML engineer approach it?
+- What should I remember tomorrow?
+
+Favor:
+
+**Show it → Predict it → Break it → Fix it → Measure it → Explain it**
+
+# FIRST ACTION
+
+Do NOT generate all four days in one giant pass.
+
+Begin by:
+
+1. Reading and analyzing `course-outline.md`.
+2. Invoking the Course Architect to create the four-day blueprint and detailed lab/activity map.
+3. Invoking the Insight Generator.
+4. Presenting a concise implementation plan that shows:
+   - what each agent will produce,
+   - the proposed labs for each day,
+   - which labs will be executed by Lab Tester,
+   - and the review/revision loop.
+5. Then begin full development of **Day 1**.
+6. Continue through the workflow systematically.
+
+Treat this as a complete course-development project. The course is not finished until the content is coherent, the pedagogy has been reviewed, and the required labs have actually been executed and validated.

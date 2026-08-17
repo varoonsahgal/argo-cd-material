@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Aligned overfit and rescue learning curves</title>
+  <desc id="desc">Two charts share the same axes. The baseline training accuracy rises while validation peaks and declines after epoch five. The one-intervention chart shows lower training accuracy and higher stable validation, with a note that a smaller gap is only useful when absolute validation remains strong.</desc>
+  <rect width="1280" height="720" fill="#F7F5EF"/>
+  <text x="55" y="60" font-family="Aptos, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#18333D">A rescue must change the evidence in the predicted direction</text>
+  <text x="55" y="96" font-family="Aptos, Helvetica, sans-serif" font-size="20" fill="#455B62">Same split, seed, axes, evaluation cadence, and major epoch budget.</text>
+
+  <g font-family="Aptos, Helvetica, sans-serif">
+    <g transform="translate(80 155)">
+      <text x="245" y="-18" font-size="23" font-weight="700" text-anchor="middle" fill="#18333D">BASELINE: HIGH CAPACITY + TINY DATA</text>
+      <rect width="500" height="355" fill="#FFFFFF" stroke="#B5B5AE" stroke-width="2"/>
+      <g stroke="#E2E1DB" stroke-width="1">
+        <path d="M0 71 H500 M0 142 H500 M0 213 H500 M0 284 H500"/>
+        <path d="M100 0 V355 M200 0 V355 M300 0 V355 M400 0 V355"/>
+      </g>
+      <path d="M0 355 V0 M0 355 H500" stroke="#465B62" stroke-width="3"/>
+      <path d="M0 305 C50 235 95 170 150 115 S260 45 500 20" fill="none" stroke="#157A6E" stroke-width="7"/>
+      <path d="M0 312 C55 250 95 200 125 170 C165 146 215 160 260 185 C330 220 405 250 500 270" fill="none" stroke="#C24A3A" stroke-width="7"/>
+      <path d="M125 0 V355" stroke="#D08A26" stroke-width="4" stroke-dasharray="10 7"/>
+      <text x="134" y="28" font-size="16" fill="#A86B14">validation peak</text>
+      <text x="388" y="43" font-size="17" font-weight="700" fill="#157A6E">train</text>
+      <text x="388" y="244" font-size="17" font-weight="700" fill="#C24A3A">validation</text>
+      <text x="250" y="394" font-size="18" text-anchor="middle" fill="#18333D">epoch</text>
+      <text x="-205" y="-47" font-size="18" text-anchor="middle" fill="#18333D" transform="rotate(-90)">accuracy (same scale)</text>
+      <text x="250" y="430" font-size="18" text-anchor="middle" fill="#972F2F">gap widens while validation worsens</text>
+    </g>
+
+    <g transform="translate(700 155)">
+      <text x="245" y="-18" font-size="23" font-weight="700" text-anchor="middle" fill="#18333D">ONE INTERVENTION: MATCHED BUDGET</text>
+      <rect width="500" height="355" fill="#FFFFFF" stroke="#B5B5AE" stroke-width="2"/>
+      <g stroke="#E2E1DB" stroke-width="1">
+        <path d="M0 71 H500 M0 142 H500 M0 213 H500 M0 284 H500"/>
+        <path d="M100 0 V355 M200 0 V355 M300 0 V355 M400 0 V355"/>
+      </g>
+      <path d="M0 355 V0 M0 355 H500" stroke="#465B62" stroke-width="3"/>
+      <path d="M0 305 C55 240 105 185 170 135 S310 85 500 70" fill="none" stroke="#157A6E" stroke-width="7"/>
+      <path d="M0 312 C55 250 110 200 170 160 S310 125 500 122" fill="none" stroke="#C24A3A" stroke-width="7"/>
+      <text x="405" y="88" font-size="17" font-weight="700" fill="#157A6E">train</text>
+      <text x="386" y="142" font-size="17" font-weight="700" fill="#C24A3A">validation</text>
+      <text x="250" y="394" font-size="18" text-anchor="middle" fill="#18333D">epoch</text>
+      <text x="-205" y="-47" font-size="18" text-anchor="middle" fill="#18333D" transform="rotate(-90)">accuracy (same scale)</text>
+      <text x="250" y="430" font-size="18" text-anchor="middle" fill="#157A6E">validation remains stronger while fit is constrained</text>
+    </g>
+
+    <rect x="80" y="630" width="1120" height="58" rx="8" fill="#FFF4D9" stroke="#B27A19" stroke-width="3"/>
+    <text x="102" y="666" font-size="20" font-weight="700" fill="#7B5311">Decision rule: a smaller gap is not a win if both train and validation collapse. Inspect absolute behavior.</text>
+    <g transform="translate(510 115)">
+      <line x1="0" y1="0" x2="42" y2="0" stroke="#157A6E" stroke-width="7"/><text x="52" y="6" font-size="17" fill="#18333D">training</text>
+      <line x1="145" y1="0" x2="187" y2="0" stroke="#C24A3A" stroke-width="7"/><text x="197" y="6" font-size="17" fill="#18333D">validation</text>
+    </g>
+  </g>
+</svg>

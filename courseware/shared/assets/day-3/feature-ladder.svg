@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Feature ladder with capacity and risk</title>
+  <desc id="desc">Four stages progress from raw pixels to local patterns, intermediate combinations, and task-relevant representations. Separate bars show that capacity and optimization or generalization risk can both rise with depth.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#244B5A"/></marker>
+    <linearGradient id="capacity" x1="0" x2="1"><stop offset="0" stop-color="#B8D8D8"/><stop offset="1" stop-color="#157A6E"/></linearGradient>
+    <linearGradient id="risk" x1="0" x2="1"><stop offset="0" stop-color="#F5D7A1"/><stop offset="1" stop-color="#C24A3A"/></linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="#F7F5EF"/>
+  <text x="70" y="70" font-family="Aptos, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#18333D">Depth can build reusable features, but it raises more than one curve</text>
+  <text x="70" y="108" font-family="Aptos, Helvetica, sans-serif" font-size="20" fill="#3E555C">Read left to right. Layer roles are possibilities to test, not universal semantic labels.</text>
+
+  <g font-family="Aptos, Helvetica, sans-serif">
+    <g transform="translate(70 175)">
+      <rect width="235" height="225" rx="8" fill="#FFFFFF" stroke="#557B83" stroke-width="3"/>
+      <text x="20" y="38" font-size="18" font-weight="700" fill="#244B5A">INPUT</text>
+      <g transform="translate(60 62)">
+        <rect width="112" height="112" fill="#E7E7E2" stroke="#9B9B93"/>
+        <g fill="#6F7471">
+          <rect x="16" y="16" width="16" height="16"/><rect x="48" y="16" width="16" height="16" fill="#BCBFB9"/><rect x="80" y="16" width="16" height="16" fill="#2E3432"/>
+          <rect x="16" y="48" width="16" height="16" fill="#D3D4CF"/><rect x="48" y="48" width="16" height="16" fill="#4F5552"/><rect x="80" y="48" width="16" height="16" fill="#999E99"/>
+          <rect x="16" y="80" width="16" height="16" fill="#222725"/><rect x="48" y="80" width="16" height="16" fill="#8A8F8B"/><rect x="80" y="80" width="16" height="16" fill="#DADBD7"/>
+        </g>
+      </g>
+      <text x="20" y="205" font-size="18" fill="#18333D">raw intensities</text>
+    </g>
+    <path d="M315 287 H360" stroke="#244B5A" stroke-width="4" marker-end="url(#arrow)"/>
+    <g transform="translate(370 175)">
+      <rect width="235" height="225" rx="8" fill="#FFFFFF" stroke="#557B83" stroke-width="3"/>
+      <text x="20" y="38" font-size="18" font-weight="700" fill="#244B5A">EARLY</text>
+      <g transform="translate(55 64)" stroke="#157A6E" stroke-width="9">
+        <path d="M10 8 V105"/><path d="M45 8 L90 105"/><path d="M115 10 H15" stroke="#90BDB7"/><path d="M15 78 H115" stroke="#90BDB7"/>
+      </g>
+      <text x="20" y="190" font-size="18" fill="#18333D">local transitions</text>
+      <text x="20" y="213" font-size="16" fill="#5A6C71">can encode edges</text>
+    </g>
+    <path d="M615 287 H660" stroke="#244B5A" stroke-width="4" marker-end="url(#arrow)"/>
+    <g transform="translate(670 175)">
+      <rect width="235" height="225" rx="8" fill="#FFFFFF" stroke="#557B83" stroke-width="3"/>
+      <text x="20" y="38" font-size="18" font-weight="700" fill="#244B5A">MIDDLE</text>
+      <g transform="translate(58 62)" fill="none" stroke="#D08A26" stroke-width="8">
+        <path d="M5 100 L5 28 L45 8 L85 28 L85 100"/>
+        <path d="M27 100 V62 H63 V100"/>
+        <circle cx="105" cy="33" r="17" stroke="#157A6E"/>
+        <path d="M93 46 L115 68" stroke="#157A6E"/>
+      </g>
+      <text x="20" y="190" font-size="18" fill="#18333D">textures + parts</text>
+      <text x="20" y="213" font-size="16" fill="#5A6C71">combine local evidence</text>
+    </g>
+    <path d="M915 287 H960" stroke="#244B5A" stroke-width="4" marker-end="url(#arrow)"/>
+    <g transform="translate(970 175)">
+      <rect width="235" height="225" rx="8" fill="#FFFFFF" stroke="#557B83" stroke-width="3"/>
+      <text x="20" y="38" font-size="18" font-weight="700" fill="#244B5A">LATER</text>
+      <g transform="translate(60 58)">
+        <path d="M17 18 L45 5 L70 22 L98 8 L112 38 L92 52 L92 108 H22 V52 L3 38 Z" fill="#C8DED9" stroke="#157A6E" stroke-width="5"/>
+        <path d="M45 5 Q57 36 70 22" fill="none" stroke="#157A6E" stroke-width="4"/>
+      </g>
+      <text x="20" y="190" font-size="18" fill="#18333D">task-relevant pattern</text>
+      <text x="20" y="213" font-size="16" fill="#5A6C71">not a guaranteed concept</text>
+    </g>
+  </g>
+
+  <g font-family="Aptos, Helvetica, sans-serif">
+    <text x="70" y="470" font-size="20" font-weight="700" fill="#18333D">Representational capacity</text>
+    <rect x="310" y="448" width="895" height="28" rx="6" fill="url(#capacity)"/>
+    <text x="310" y="507" font-size="20" font-weight="700" fill="#18333D">Optimization + generalization risk</text>
+    <rect x="640" y="485" width="565" height="28" rx="6" fill="url(#risk)"/>
+    <text x="70" y="570" font-size="24" font-weight="700" fill="#C24A3A">Prediction prompt</text>
+    <text x="70" y="607" font-size="22" fill="#18333D">Which evidence would show that added depth helped representation rather than only training fit?</text>
+    <rect x="70" y="640" width="1135" height="48" rx="7" fill="#E8F1EF" stroke="#157A6E" stroke-width="2"/>
+    <text x="92" y="671" font-size="19" fill="#18333D">Do not infer: deeper layers always become more abstract, human-readable, or more accurate.</text>
+  </g>
+</svg>

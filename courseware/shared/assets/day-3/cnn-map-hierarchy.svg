@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">CNN feature-map hierarchy with interpretation caveat</title>
+  <desc id="desc">A shirt-like input leads to early maps with detailed edges, middle maps with textures and corners, and later sparse task-relevant responses. A side panel distinguishes descriptive observations from semantic or causal claims that require interventions.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0 L0 6 L9 3 Z" fill="#244B5A"/></marker>
+    <pattern id="grid" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0 H0 V16" fill="none" stroke="#FFFFFF" stroke-width="1" opacity="0.45"/></pattern>
+  </defs>
+  <rect width="1280" height="720" fill="#F7F5EF"/>
+  <text x="55" y="62" font-family="Aptos, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#18333D">Feature maps make internal responses visible, not self-explanatory</text>
+  <text x="55" y="98" font-family="Aptos, Helvetica, sans-serif" font-size="20" fill="#455B62">Compare the same input across stages. Describe first; interpret second; intervene before causal language.</text>
+
+  <g font-family="Aptos, Helvetica, sans-serif">
+    <g transform="translate(55 165)">
+      <text x="90" y="-22" font-size="20" font-weight="700" text-anchor="middle" fill="#244B5A">INPUT</text>
+      <rect width="180" height="210" rx="8" fill="#FFFFFF" stroke="#557B83" stroke-width="3"/>
+      <path d="M43 52 L72 34 L91 48 L110 34 L139 52 L153 88 L129 104 L129 174 H52 V104 L27 88 Z" fill="#D5D8D3" stroke="#4F5956" stroke-width="5"/>
+      <path d="M72 34 Q91 72 110 34" fill="none" stroke="#4F5956" stroke-width="4"/>
+      <text x="90" y="198" font-size="16" text-anchor="middle" fill="#455B62">same shirt image</text>
+    </g>
+    <path d="M250 270 H305" stroke="#244B5A" stroke-width="4" marker-end="url(#arrow)"/>
+
+    <g transform="translate(320 145)">
+      <text x="115" y="-2" font-size="20" font-weight="700" text-anchor="middle" fill="#244B5A">EARLY MAPS</text>
+      <rect y="18" width="105" height="105" fill="#306B74"/><rect x="115" y="18" width="105" height="105" fill="#B8D8D8"/>
+      <rect y="133" width="105" height="105" fill="#78999E"/><rect x="115" y="133" width="105" height="105" fill="#2D555D"/>
+      <g fill="none" stroke="#F7F5EF" stroke-width="5" opacity="0.9">
+        <path d="M18 45 L38 30 L54 42 L70 30 L89 45 L94 70 L80 79 V107 H25 V79 L11 70 Z"/>
+        <path d="M131 95 H204 M145 35 V106"/>
+        <path d="M12 190 Q50 145 96 205"/>
+        <path d="M126 156 L206 218 M126 218 L206 156"/>
+      </g>
+      <rect y="18" width="220" height="220" fill="url(#grid)"/>
+      <text x="110" y="270" font-size="17" text-anchor="middle" fill="#18333D">many local boundaries</text>
+      <text x="110" y="294" font-size="16" text-anchor="middle" fill="#455B62">high spatial detail</text>
+    </g>
+    <path d="M555 270 H610" stroke="#244B5A" stroke-width="4" marker-end="url(#arrow)"/>
+
+    <g transform="translate(625 160)">
+      <text x="105" y="-17" font-size="20" font-weight="700" text-anchor="middle" fill="#244B5A">MIDDLE MAPS</text>
+      <rect width="95" height="95" fill="#D6A34B"/><rect x="105" width="95" height="95" fill="#6B9C93"/>
+      <rect y="105" width="95" height="95" fill="#4C737B"/><rect x="105" y="105" width="95" height="95" fill="#E1C587"/>
+      <g fill="none" stroke="#F7F5EF" stroke-width="7">
+        <path d="M12 82 V26 L45 10 L80 28 V82"/>
+        <path d="M120 15 L185 80 M120 80 L185 15"/>
+        <path d="M12 150 H80 M45 116 V190"/>
+        <path d="M119 180 Q150 110 190 180"/>
+      </g>
+      <text x="100" y="232" font-size="17" text-anchor="middle" fill="#18333D">corners + textures</text>
+      <text x="100" y="256" font-size="16" text-anchor="middle" fill="#455B62">broader combinations</text>
+    </g>
+    <path d="M840 270 H895" stroke="#244B5A" stroke-width="4" marker-end="url(#arrow)"/>
+
+    <g transform="translate(910 178)">
+      <text x="85" y="-35" font-size="20" font-weight="700" text-anchor="middle" fill="#244B5A">LATER MAPS</text>
+      <rect width="160" height="160" fill="#284A52"/>
+      <path d="M30 43 Q80 5 132 43" fill="none" stroke="#E9B44C" stroke-width="16"/>
+      <circle cx="46" cy="110" r="15" fill="#5C7E83"/><circle cx="118" cy="112" r="10" fill="#5C7E83"/>
+      <text x="80" y="194" font-size="17" text-anchor="middle" fill="#18333D">sparse response</text>
+      <text x="80" y="218" font-size="16" text-anchor="middle" fill="#455B62">for inspected inputs</text>
+    </g>
+  </g>
+
+  <g font-family="Aptos, Helvetica, sans-serif">
+    <rect x="55" y="500" width="545" height="150" rx="8" fill="#E8F1EF" stroke="#157A6E" stroke-width="3"/>
+    <text x="75" y="535" font-size="20" font-weight="700" fill="#157A6E">SUPPORTED DESCRIPTION</text>
+    <text x="75" y="570" font-size="18" fill="#18333D">"For these images, this later channel responds near</text>
+    <text x="75" y="596" font-size="18" fill="#18333D">the upper outline more strongly than elsewhere."</text>
+    <text x="75" y="626" font-size="16" fill="#455B62">Name layer, channel, input set, and observed pattern.</text>
+
+    <rect x="630" y="500" width="595" height="150" rx="8" fill="#FBE4E1" stroke="#B33A3A" stroke-width="3"/>
+    <text x="650" y="535" font-size="20" font-weight="700" fill="#972F2F">NOT YET ESTABLISHED</text>
+    <text x="650" y="570" font-size="18" fill="#18333D">"This is the shirt detector that caused the prediction."</text>
+    <text x="650" y="602" font-size="16" fill="#455B62">Test with masking, translation, counterfactual inputs, and</text>
+    <text x="650" y="626" font-size="16" fill="#455B62">downstream-path evidence before causal or semantic claims.</text>
+  </g>
+  <text x="55" y="692" font-family="Aptos, Helvetica, sans-serif" font-size="20" font-weight="700" fill="#18333D">Observation prompt: Which spatial detail disappeared, and what new selectivity is only a hypothesis?</text>
+</svg>

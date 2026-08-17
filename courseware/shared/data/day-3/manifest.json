@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "generated_utc": "2026-08-16T12:55:58Z",
+  "generator": "generate_day3_offline_artifacts.py",
+  "seed": 31415,
+  "environment": {
+    "python": "3.11.8",
+    "numpy": "2.2.4",
+    "torch": "2.6.0",
+    "torchvision": "0.21.0",
+    "device": "cpu"
+  },
+  "generation_seconds": 0.3030903749167919,
+  "artifacts": {
+    "fashion_mnist_fallback": {
+      "path": "fashion_mnist_fallback.npz",
+      "bytes": 2024650,
+      "sha256": "c3fd6c0581b5baf626dfd59e735ac6f787a858a488db4afd09d2e0cbd4294122",
+      "counts": {
+        "train": 3000,
+        "validation": 800,
+        "test": 800
+      },
+      "source": "Fashion-MNIST via torchvision.datasets.FashionMNIST",
+      "source_url": "https://github.com/zalandoresearch/fashion-mnist",
+      "license": "MIT (Fashion-MNIST repository)",
+      "generation": "Balanced subset sampled without replacement from official train/test files.",
+      "fallback_scope": [
+        "image tensor and channel shapes",
+        "bounded CNN training/evaluation",
+        "feature-map capture and hook cleanup",
+        "misclassification inspection",
+        "tiny-data overfitting and one-remedy comparison"
+      ],
+      "not_validated_by_fallback": [
+        "the 10k/2k/2k online split metric band",
+        "full Fashion-MNIST training throughput"
+      ]
+    },
+    "transfer_recovery_surrogate": {
+      "mode": "course-supplied recovery surrogate; not CIFAR-10 or MobileNet features",
+      "subset": {
+        "path": "transfer_surrogate_fashion_subset.npz",
+        "bytes": 1761595,
+        "sha256": "605aa62f6b4260203c6d205dac3fac432c434818e77316cc2f254ee84e85c9db"
+      },
+      "embeddings": {
+        "path": "transfer_surrogate_embeddings.npz",
+        "bytes": 1901816,
+        "sha256": "39fd63a657d0a2ecdc2e88c4a512aaea9f55e5af86c424908e7d5250934e6c5a",
+        "shape": {
+          "train": [
+            2400,
+            256
+          ],
+          "validation": [
+            800,
+            256
+          ],
+          "test": [
+            800,
+            256
+          ]
+        },
+        "dtype": "float16 (converted to float32 by participant notebook)"
+      },
+      "counts": {
+        "train": 2400,
+        "validation": 800,
+        "test": 800
+      },
+      "source": "The packaged balanced Fashion-MNIST recovery subset",
+      "source_artifact": "fashion_mnist_fallback.npz",
+      "source_artifact_sha256": "c3fd6c0581b5baf626dfd59e735ac6f787a858a488db4afd09d2e0cbd4294122",
+      "license": "MIT (Fashion-MNIST repository)",
+      "generation": {
+        "feature_extractor": "label-blind 4x4 mean/gradient pooling plus seeded random projection and tanh",
+        "transform": "uint8 / 255; no augmentation",
+        "split_seed": 31415,
+        "split_hash": "76bcdaa199ee956487f08b9f2fb9d1b5639d52c2d4db7bfb362d631c837b0af0",
+        "counts": {
+          "train": 2400,
+          "validation": 800,
+          "test": 800
+        }
+      },
+      "cache_key": "0f856d9fc8c148957343473c85c0e05af84b1dc677ae06c8742df466603d6fe5",
+      "fallback_scope": [
+        "fixed-split image loading and bounded scratch-model training",
+        "precomputed-feature loading without labels embedded in features",
+        "new classifier-head training and evaluation",
+        "trainable-versus-total parameter reasoning",
+        "quality/time/sample-count scoreboard construction"
+      ],
+      "not_validated_by_fallback": [
+        "CIFAR-10 class behavior or metric bands",
+        "MobileNet V3 Small weights, transforms, gradients, or extraction",
+        "a transfer-learning advantage over scratch training",
+        "online download/cache behavior or participant-machine extraction time"
+      ]
+    }
+  },
+  "participant_safety": "Contains images, class labels, and frozen feature vectors only. No trained task head, predictions, answer key, hidden diagnosis, or completed learner model is included."
+}

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">NumPy and PyTorch training responsibilities side by side</title>
+  <desc id="desc">A seven-row map links NumPy parameter dictionaries, gradient reset, forward caches, stable BCE, hand-written gradients, updates, and evaluation to PyTorch modules, zero_grad, model calls, BCEWithLogitsLoss, backward, optimizer step, and explicit evaluation plus inference mode.</desc>
+  <rect width="1200" height="700" fill="#F7F7F2"/>
+  <text x="60" y="70" font-family="Aptos, Helvetica, sans-serif" font-size="38" font-weight="700" fill="#17252A">The framework automates mechanics, not judgment</text>
+  <text x="60" y="108" font-family="Aptos, Helvetica, sans-serif" font-size="21" fill="#485460">Every concise call maps to a responsibility already exposed in NumPy.</text>
+  <g font-family="Aptos, Helvetica, sans-serif">
+    <rect x="55" y="145" width="505" height="62" fill="#176B87"/><rect x="640" y="145" width="505" height="62" fill="#71578A"/>
+    <text x="307" y="185" text-anchor="middle" font-size="26" font-weight="700" fill="#FFFFFF">From scratch: NumPy</text>
+    <text x="892" y="185" text-anchor="middle" font-size="26" font-weight="700" fill="#FFFFFF">Automated: PyTorch 2.11</text>
+    <g font-size="21" fill="#17252A">
+      <rect x="55" y="207" width="1090" height="62" fill="#FFFFFF"/><text x="80" y="246">parameter arrays and shapes</text><text x="665" y="246">registered nn.Module parameters</text>
+      <rect x="55" y="269" width="1090" height="62" fill="#E7ECEF"/><text x="80" y="308">clear or replace gradient arrays</text><text x="665" y="308">optimizer.zero_grad(...)</text>
+      <rect x="55" y="331" width="1090" height="62" fill="#FFFFFF"/><text x="80" y="370">forward function plus cache</text><text x="665" y="370">logits = model(X_batch)</text>
+      <rect x="55" y="393" width="1090" height="62" fill="#E7ECEF"/><text x="80" y="432">stable binary loss</text><text x="665" y="432">BCEWithLogitsLoss(logits, targets)</text>
+      <rect x="55" y="455" width="1090" height="62" fill="#FFFFFF"/><text x="80" y="494">hand-written chain-rule gradients</text><text x="665" y="494">loss.backward()</text>
+      <rect x="55" y="517" width="1090" height="62" fill="#E7ECEF"/><text x="80" y="556">theta = theta - eta * gradient</text><text x="665" y="556">optimizer.step()</text>
+      <rect x="55" y="579" width="1090" height="62" fill="#FFFFFF"/><text x="80" y="618">fixed-parameter evaluation path</text><text x="665" y="618">model.eval() + inference_mode()</text>
+    </g>
+    <line x1="600" y1="145" x2="600" y2="641" stroke="#A06A00" stroke-width="5"/>
+    <text x="600" y="678" text-anchor="middle" font-size="20" font-weight="700" fill="#A06A00">Still yours: data, objective, evidence, diagnosis</text>
+  </g>
+</svg>

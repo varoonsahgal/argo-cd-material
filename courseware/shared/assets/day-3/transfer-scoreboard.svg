@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Transfer-learning scoreboard and trainable-parameter contrast</title>
+  <desc id="desc">A scratch model and frozen pretrained backbone are compared under the same split and budget. The scoreboard requires validation quality, first-run and cached time, trainable and total parameters, weight and transform identity, and serving cost. A bar emphasizes that a frozen backbone can have many total parameters but only a small trainable head.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0 L0 6 L9 3 Z" fill="#244B5A"/></marker>
+  </defs>
+  <rect width="1280" height="720" fill="#F7F5EF"/>
+  <text x="55" y="58" font-family="Aptos, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#18333D">Transfer-learning race: the winner is conditional</text>
+  <text x="55" y="94" font-family="Aptos, Helvetica, sans-serif" font-size="20" fill="#455B62">Same split + declared budget. Record evidence before naming a winner.</text>
+
+  <g font-family="Aptos, Helvetica, sans-serif">
+    <g transform="translate(55 135)">
+      <rect width="340" height="210" rx="8" fill="#FFFFFF" stroke="#1F6074" stroke-width="3"/>
+      <text x="20" y="38" font-size="22" font-weight="700" fill="#1F6074">SCRATCH CNN</text>
+      <rect x="25" y="62" width="75" height="75" fill="#C8DED9" stroke="#157A6E" stroke-width="3"/>
+      <text x="62" y="105" font-size="16" text-anchor="middle" fill="#18333D">pixels</text>
+      <path d="M105 99 H145" stroke="#244B5A" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="155" y="62" width="75" height="75" fill="#D9EBDD" stroke="#28704B" stroke-width="3"/>
+      <text x="192" y="94" font-size="15" text-anchor="middle" fill="#18333D">learn</text><text x="192" y="114" font-size="15" text-anchor="middle" fill="#18333D">features</text>
+      <path d="M235 99 H265" stroke="#244B5A" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="275" y="62" width="45" height="75" fill="#FFF4D9" stroke="#B27A19" stroke-width="3"/>
+      <text x="297" y="105" font-size="15" text-anchor="middle" fill="#18333D">head</text>
+      <text x="20" y="170" font-size="17" fill="#18333D">all model parameters trainable</text>
+      <text x="20" y="197" font-size="16" fill="#455B62">must learn representation from target data</text>
+    </g>
+
+    <g transform="translate(55 385)">
+      <rect width="340" height="210" rx="8" fill="#FFFFFF" stroke="#68548A" stroke-width="3"/>
+      <text x="20" y="38" font-size="22" font-weight="700" fill="#594476">FROZEN PRETRAINED</text>
+      <rect x="25" y="62" width="75" height="75" fill="#C8DED9" stroke="#157A6E" stroke-width="3"/>
+      <text x="62" y="105" font-size="16" text-anchor="middle" fill="#18333D">pixels</text>
+      <path d="M105 99 H145" stroke="#244B5A" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="155" y="62" width="105" height="75" fill="#E9E5F2" stroke="#68548A" stroke-width="3"/>
+      <text x="207" y="91" font-size="15" text-anchor="middle" fill="#18333D">frozen</text><text x="207" y="111" font-size="15" text-anchor="middle" fill="#18333D">features</text>
+      <path d="M265 99 H285" stroke="#244B5A" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="295" y="62" width="30" height="75" fill="#FFF4D9" stroke="#B27A19" stroke-width="3"/>
+      <text x="310" y="105" font-size="14" text-anchor="middle" fill="#18333D" transform="rotate(-90 310 105)">new head</text>
+      <text x="20" y="170" font-size="17" fill="#18333D">small head trainable; backbone fixed</text>
+      <text x="20" y="197" font-size="16" fill="#455B62">total size can still exceed scratch</text>
+    </g>
+
+    <g transform="translate(435 135)">
+      <rect width="790" height="355" rx="8" fill="#FFFFFF" stroke="#557B83" stroke-width="3"/>
+      <text x="24" y="39" font-size="22" font-weight="700" fill="#18333D">EVIDENCE SCOREBOARD</text>
+      <line x1="24" y1="60" x2="766" y2="60" stroke="#B5B5AE" stroke-width="2"/>
+      <text x="28" y="90" font-size="17" font-weight="700" fill="#455B62">MEASURE</text>
+      <text x="410" y="90" font-size="17" font-weight="700" fill="#1F6074">SCRATCH</text>
+      <text x="610" y="90" font-size="17" font-weight="700" fill="#594476">FROZEN</text>
+      <g font-size="18" fill="#18333D">
+        <text x="28" y="128">validation quality + slices</text><text x="410" y="128">record run</text><text x="610" y="128">record run</text>
+        <text x="28" y="166">first extraction/training time</text><text x="410" y="166">record device</text><text x="610" y="166">include extraction</text>
+        <text x="28" y="204">cached rerun time</text><text x="410" y="204">not applicable</text><text x="610" y="204">record cache hit</text>
+        <text x="28" y="242">trainable / total parameters</text><text x="410" y="242">count / count</text><text x="610" y="242">count / count</text>
+        <text x="28" y="280">weights + transforms + split</text><text x="410" y="280">scratch contract</text><text x="610" y="280">enum + transforms()</text>
+        <text x="28" y="318">serving latency / memory</text><text x="410" y="318">measure</text><text x="610" y="318">measure</text>
+      </g>
+    </g>
+
+    <g transform="translate(435 520)">
+      <text x="0" y="0" font-size="20" font-weight="700" fill="#18333D">Trainable-parameter contrast</text>
+      <text x="0" y="37" font-size="17" fill="#1F6074">scratch</text>
+      <rect x="110" y="20" width="520" height="24" rx="5" fill="#1F6074"/>
+      <text x="645" y="39" font-size="16" fill="#455B62">all trainable</text>
+      <text x="0" y="80" font-size="17" fill="#594476">frozen</text>
+      <rect x="110" y="63" width="520" height="24" rx="5" fill="#D9D2E8"/>
+      <rect x="110" y="63" width="45" height="24" rx="5" fill="#D08A26"/>
+      <text x="645" y="82" font-size="16" fill="#455B62">head trainable; total remains large</text>
+    </g>
+
+    <rect x="435" y="640" width="790" height="52" rx="7" fill="#FBE4E1" stroke="#B33A3A" stroke-width="2"/>
+    <text x="455" y="672" font-size="17" font-weight="700" fill="#972F2F">Pretraining claims require a random-frozen control and valid transforms.</text>
+  </g>
+</svg>

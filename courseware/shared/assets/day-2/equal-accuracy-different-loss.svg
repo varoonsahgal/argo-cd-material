@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Equal accuracy with different binary cross-entropy loss</title>
+  <desc id="desc">Two models classify all four examples correctly. Model A assigns target-class probabilities from 0.8 to 0.9 and has mean BCE 0.164. Model B assigns probabilities from 0.55 to 0.6 and has mean BCE 0.554.</desc>
+  <rect width="1200" height="700" fill="#F7F7F2"/>
+  <text x="65" y="72" font-family="Aptos, Helvetica, sans-serif" font-size="38" font-weight="700" fill="#17252A">Same decisions. Different optimization signal.</text>
+  <text x="65" y="110" font-family="Aptos, Helvetica, sans-serif" font-size="21" fill="#485460">Bar length is probability assigned to the correct target class.</text>
+  <g font-family="Aptos, Helvetica, sans-serif">
+    <text x="70" y="178" font-size="29" font-weight="700" fill="#176B87">Model A</text>
+    <text x="970" y="178" font-size="22" font-weight="700" fill="#176B87">Accuracy 4/4</text>
+    <text x="970" y="210" font-size="22" fill="#17252A">Mean BCE 0.164</text>
+    <text x="70" y="419" font-size="29" font-weight="700" fill="#B73E3E">Model B</text>
+    <text x="970" y="419" font-size="22" font-weight="700" fill="#B73E3E">Accuracy 4/4</text>
+    <text x="970" y="451" font-size="22" fill="#17252A">Mean BCE 0.554</text>
+    <g font-size="18" fill="#485460">
+      <text x="70" y="238">Example 1</text><text x="70" y="288">Example 2</text><text x="70" y="338">Example 3</text><text x="70" y="388">Example 4</text>
+      <text x="70" y="479">Example 1</text><text x="70" y="529">Example 2</text><text x="70" y="579">Example 3</text><text x="70" y="629">Example 4</text>
+    </g>
+    <g fill="#E0E4E6">
+      <rect x="185" y="217" width="700" height="28"/><rect x="185" y="267" width="700" height="28"/><rect x="185" y="317" width="700" height="28"/><rect x="185" y="367" width="700" height="28"/>
+      <rect x="185" y="458" width="700" height="28"/><rect x="185" y="508" width="700" height="28"/><rect x="185" y="558" width="700" height="28"/><rect x="185" y="608" width="700" height="28"/>
+    </g>
+    <g fill="#176B87">
+      <rect x="185" y="217" width="630" height="28"/><rect x="185" y="267" width="630" height="28"/><rect x="185" y="317" width="560" height="28"/><rect x="185" y="367" width="560" height="28"/>
+    </g>
+    <g fill="#B73E3E">
+      <rect x="185" y="458" width="385" height="28"/><rect x="185" y="508" width="385" height="28"/><rect x="185" y="558" width="420" height="28"/><rect x="185" y="608" width="420" height="28"/>
+    </g>
+    <g font-size="18" font-weight="700" fill="#17252A">
+      <text x="830" y="239">0.90</text><text x="830" y="289">0.90</text><text x="760" y="339">0.80</text><text x="760" y="389">0.80</text>
+      <text x="585" y="480">0.55</text><text x="585" y="530">0.55</text><text x="620" y="580">0.60</text><text x="620" y="630">0.60</text>
+    </g>
+  </g>
+  <line x1="535" y1="205" x2="535" y2="648" stroke="#A06A00" stroke-width="3" stroke-dasharray="10 8"/>
+  <text x="535" y="677" text-anchor="middle" font-family="Aptos, Helvetica, sans-serif" font-size="18" fill="#A06A00">0.50 decision threshold</text>
+</svg>

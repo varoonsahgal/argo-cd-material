@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Valid data pipeline and two leakage paths</title>
+  <desc id="desc">A valid pipeline splits raw records before fitting preprocessing on training only. Red arrows show a post-outcome resolution code entering features and a scaler fitted on all records before the split.</desc>
+  <defs>
+    <marker id="blueArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0 L0 6 L9 3 Z" fill="#1F6074"/></marker>
+    <marker id="redArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0 L0 6 L9 3 Z" fill="#B33A3A"/></marker>
+  </defs>
+  <rect width="1280" height="720" fill="#F7F5EF"/>
+  <text x="55" y="60" font-family="Aptos, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#18333D">Validation needs a chain of custody</text>
+  <text x="55" y="96" font-family="Aptos, Helvetica, sans-serif" font-size="20" fill="#455B62">Blue: valid ownership. Red: validation or future information crosses into training.</text>
+
+  <g font-family="Aptos, Helvetica, sans-serif">
+    <g transform="translate(55 150)">
+      <rect width="210" height="105" rx="8" fill="#FFFFFF" stroke="#1F6074" stroke-width="3"/>
+      <text x="18" y="34" font-size="19" font-weight="700" fill="#1F6074">RAW RECORDS</text>
+      <text x="18" y="65" font-size="17" fill="#18333D">feature time</text>
+      <text x="18" y="88" font-size="17" fill="#18333D">entity + label source</text>
+    </g>
+    <path d="M265 202 H335" stroke="#1F6074" stroke-width="4" marker-end="url(#blueArrow)"/>
+    <g transform="translate(345 150)">
+      <rect width="200" height="105" rx="8" fill="#E7F0F2" stroke="#1F6074" stroke-width="3"/>
+      <text x="25" y="36" font-size="19" font-weight="700" fill="#1F6074">SPLIT FIRST</text>
+      <text x="25" y="67" font-size="17" fill="#18333D">seeded + stratified</text>
+      <text x="25" y="90" font-size="17" fill="#18333D">entity/time aware</text>
+    </g>
+
+    <path d="M545 180 H610" stroke="#1F6074" stroke-width="4" marker-end="url(#blueArrow)"/>
+    <path d="M545 202 H610" stroke="#1F6074" stroke-width="4" marker-end="url(#blueArrow)"/>
+    <path d="M545 224 H610" stroke="#1F6074" stroke-width="4" marker-end="url(#blueArrow)"/>
+    <g transform="translate(620 125)">
+      <rect width="170" height="75" rx="7" fill="#D9EBDD" stroke="#28704B" stroke-width="3"/>
+      <text x="28" y="31" font-size="19" font-weight="700" fill="#225F41">TRAIN</text>
+      <text x="28" y="57" font-size="16" fill="#18333D">fit allowed</text>
+      <rect y="92" width="170" height="75" rx="7" fill="#FFF4D9" stroke="#B27A19" stroke-width="3"/>
+      <text x="28" y="123" font-size="19" font-weight="700" fill="#8A5A0B">VALIDATION</text>
+      <text x="28" y="149" font-size="16" fill="#18333D">compare only</text>
+      <rect y="184" width="170" height="75" rx="7" fill="#E9E5F2" stroke="#68548A" stroke-width="3"/>
+      <text x="28" y="215" font-size="19" font-weight="700" fill="#594476">TEST</text>
+      <text x="28" y="241" font-size="16" fill="#18333D">final estimate</text>
+    </g>
+
+    <path d="M790 162 H865" stroke="#28704B" stroke-width="4" marker-end="url(#blueArrow)"/>
+    <g transform="translate(875 125)">
+      <rect width="210" height="75" rx="7" fill="#D9EBDD" stroke="#28704B" stroke-width="3"/>
+      <text x="18" y="31" font-size="18" font-weight="700" fill="#225F41">FIT PREPROCESSING</text>
+      <text x="18" y="57" font-size="16" fill="#18333D">training rows only</text>
+    </g>
+    <path d="M980 200 V262" stroke="#1F6074" stroke-width="4" marker-end="url(#blueArrow)"/>
+    <g transform="translate(875 272)">
+      <rect width="210" height="95" rx="7" fill="#FFFFFF" stroke="#1F6074" stroke-width="3"/>
+      <text x="18" y="31" font-size="18" font-weight="700" fill="#1F6074">APPLY FIXED STATE</text>
+      <text x="18" y="58" font-size="16" fill="#18333D">train + validation + test</text>
+      <text x="18" y="80" font-size="16" fill="#18333D">no refit</text>
+    </g>
+    <path d="M1085 319 H1155" stroke="#1F6074" stroke-width="4" marker-end="url(#blueArrow)"/>
+    <g transform="translate(1160 272)">
+      <rect width="90" height="95" rx="7" fill="#E7F0F2" stroke="#1F6074" stroke-width="3"/>
+      <text x="15" y="37" font-size="17" font-weight="700" fill="#1F6074">FIT</text>
+      <text x="15" y="61" font-size="17" font-weight="700" fill="#1F6074">MODEL</text>
+    </g>
+  </g>
+
+  <g font-family="Aptos, Helvetica, sans-serif">
+    <rect x="55" y="455" width="400" height="160" rx="8" fill="#FBE4E1" stroke="#B33A3A" stroke-width="3"/>
+    <text x="75" y="489" font-size="20" font-weight="700" fill="#972F2F">LEAK 1: FUTURE FEATURE</text>
+    <text x="75" y="522" font-size="18" fill="#18333D">case_resolution_code</text>
+    <text x="75" y="550" font-size="17" fill="#18333D">created after the prediction decision</text>
+    <text x="75" y="583" font-size="17" font-weight="700" fill="#972F2F">unavailable at deployment time</text>
+    <path d="M250 455 C250 390 250 330 180 255" fill="none" stroke="#B33A3A" stroke-width="5" stroke-dasharray="10 8" marker-end="url(#redArrow)"/>
+
+    <rect x="505" y="455" width="470" height="160" rx="8" fill="#FBE4E1" stroke="#B33A3A" stroke-width="3"/>
+    <text x="525" y="489" font-size="20" font-weight="700" fill="#972F2F">LEAK 2: FIT BEFORE SPLIT</text>
+    <text x="525" y="522" font-size="18" fill="#18333D">mean/std learned from every row</text>
+    <text x="525" y="550" font-size="17" fill="#18333D">validation and test influence training state</text>
+    <text x="525" y="583" font-size="17" font-weight="700" fill="#972F2F">stratification does not undo fitted state</text>
+    <path d="M740 455 C740 395 570 365 455 255" fill="none" stroke="#B33A3A" stroke-width="5" stroke-dasharray="10 8" marker-end="url(#redArrow)"/>
+
+    <rect x="1015" y="455" width="235" height="160" rx="8" fill="#E8F1EF" stroke="#157A6E" stroke-width="3"/>
+    <text x="1035" y="489" font-size="19" font-weight="700" fill="#157A6E">VALIDITY GAIN</text>
+    <text x="1035" y="522" font-size="17" fill="#18333D">A lower repaired score</text>
+    <text x="1035" y="549" font-size="17" fill="#18333D">can be better evidence.</text>
+    <text x="1035" y="582" font-size="16" fill="#455B62">Still audit shift, labels,</text>
+    <text x="1035" y="603" font-size="16" fill="#455B62">duplicates, and proxies.</text>
+  </g>
+  <text x="55" y="675" font-family="Aptos, Helvetica, sans-serif" font-size="21" font-weight="700" fill="#18333D">Prompt: Which information crossed a boundary, and when did it become available?</text>
+</svg>

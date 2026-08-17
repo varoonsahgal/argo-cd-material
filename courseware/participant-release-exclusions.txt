@@ -1,0 +1,10 @@
+# Instructor-only paths excluded from every participant release.
+courseware/instructor-guide/**
+courseware/instructor-solutions/**
+courseware/capstone/capstone-instructor-guide.md
+courseware/capstone/capstone-solution.ipynb
+courseware/shared/data/day-4/generate_day4_artifacts.py
+courseware/shared/build_day4_solutions.py
+courseware/reviews/**
+.build_day4_participant_notebooks.py
+.validate_day4_completed_runs.py
