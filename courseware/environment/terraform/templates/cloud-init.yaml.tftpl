@@ -1,0 +1,56 @@
+#cloud-config
+# cloud-init user-data for one course VM.
+#
+# Rendered per VM by main.tf via templatefile(). It does the minimum a bare
+# Ubuntu 24.04 image needs before bootstrap-vm.sh takes over:
+#   1. create the login user (${ssh_username}) with the student's SSH public key,
+#   2. install git so the course payload can be fetched,
+#   3. clone the pinned course payload,
+#   4. run scripts/bootstrap-vm.sh, which installs the pinned tools, builds the
+#      two k3d clusters + Gitea, installs Argo CD, seeds repos, and reaches
+#      CP-baseline (blueprint sections 8.3, 8.12).
+#
+# Template variables (all injected by Terraform, none are secret):
+#   ssh_username, ssh_public_key, role, vm_name,
+#   payload_git_url, payload_git_ref, payload_subdir
+#
+# NOTE: no long-lived secret is ever placed in user-data. Per-VM credentials are
+# generated on the VM by bootstrap-vm.sh; the only key material here is a PUBLIC
+# SSH key, which is safe to expose.
+
+package_update: true
+package_upgrade: false
+packages:
+  - git
+  - curl
+  - ca-certificates
+
+users:
+  - default
+  - name: ${ssh_username}
+    groups: [sudo]
+    shell: /bin/bash
+    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+    ssh_authorized_keys:
+      - ${ssh_public_key}
+
+write_files:
+  - path: /etc/course/vm-role
+    permissions: "0644"
+    content: |
+      VM_NAME=${vm_name}
+      VM_ROLE=${role}
+
+runcmd:
+  - set -euxo pipefail
+  - install -d -m 0755 /opt
+  - |
+    if [ ! -d /opt/course-payload/.git ]; then
+      git clone --depth 1 --branch "${payload_git_ref}" "${payload_git_url}" /opt/course-payload
+    fi
+  - chown -R ${ssh_username}:${ssh_username} /opt/course-payload
+  # bootstrap-vm.sh runs in VM mode (no --local): tools -> /usr/local/bin,
+  # assets -> /opt/course, credentials -> /home/${ssh_username}/course/credentials.
+  - runuser -l ${ssh_username} -c 'bash /opt/course-payload/${payload_subdir}/scripts/bootstrap-vm.sh' 2>&1 | tee /var/log/course-bootstrap.log
+
+final_message: "Course VM ${vm_name} (${role}) cloud-init finished after $UPTIME seconds. See /var/log/course-bootstrap.log for bootstrap output."

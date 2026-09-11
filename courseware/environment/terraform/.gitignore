@@ -1,0 +1,17 @@
+# Never commit Terraform state, provider caches, real tfvars, rendered
+# artifacts, or private keys.
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.*
+crash.log
+crash.*.log
+
+# Real variable values (contains your SSH CIDRs / payload location).
+terraform.tfvars
+*.auto.tfvars
+
+# Local-render adapter output and any rendered SSH keys.
+.local-render/
+*.pem
+*.key

@@ -1,0 +1,40 @@
+# terraform.tfvars.example — copy to terraform.tfvars and edit.
+#
+#   cp terraform.tfvars.example terraform.tfvars
+#
+# The default compute adapter (modules/compute-null) needs NO cloud credentials,
+# so `init -backend=false`, `validate`, and `plan` all work with only these
+# values. See instructor-setup-guide.md before you run `apply` with a real
+# cloud adapter.
+
+# How many participant VMs to create (1..20).
+student_count = 6
+
+# Provision the larger instructor/reference VM as well (recommended).
+instructor_vm_enabled = true
+
+# REQUIRED — there is no default. Restrict SSH (TCP 22) to networks you control.
+# Replace the placeholder below with your real admin IP or CIDR. "/32" means a
+# single address. Do NOT use "0.0.0.0/0" (that would open SSH to the internet).
+allowed_ssh_cidrs = ["203.0.113.10/32"]
+
+# Optional — open the Argo CD UI (8443) and Gitea (3000) directly to these
+# networks. Leave empty to require the SSH tunnel (recommended, least privilege).
+allowed_ui_cidrs = []
+
+# Prefix for every VM name and tag, so this cohort is easy to find and tear down.
+name_prefix = "argocd-course"
+
+# Where each VM fetches the course payload and runs bootstrap-vm.sh from.
+# Point git_url at wherever you host this repository; pin git_ref for a cohort.
+course_payload_ref = {
+  git_url = "https://github.com/your-org/argo-cd-operations-courseware.git"
+  git_ref = "main"
+  subdir  = "courseware/environment"
+}
+
+# Optional free-form tags for cost tracking and ownership.
+tags = {
+  course = "intermediate-argo-cd-operations"
+  owner  = "platform-team"
+}

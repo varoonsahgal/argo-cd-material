@@ -1,0 +1,29 @@
+# COMPLETE storefront AppProject (Lab 2 E4 answers, present from cp-lab-03).
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: storefront
+  namespace: argocd
+spec:
+  description: Storefront application-team project
+  sourceRepos:
+    - http://lab-gitea:3000/course/storefront-gitops.git
+  destinations:
+    - server: https://k3d-workload-server-0:6443
+      namespace: storefront-dev
+    - server: https://k3d-workload-server-0:6443
+      namespace: storefront-staging
+    - server: https://k3d-workload-server-0:6443
+      namespace: storefront-prod
+  clusterResourceWhitelist: []
+  namespaceResourceWhitelist:
+    - group: ""
+      kind: ConfigMap
+    - group: ""
+      kind: Service
+    - group: apps
+      kind: Deployment
+    - group: batch
+      kind: Job
+    - group: autoscaling
+      kind: HorizontalPodAutoscaler
