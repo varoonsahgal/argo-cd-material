@@ -1,9 +1,8 @@
 ---
-name: Lab Solution Engineer
-description: Create the separate Markdown solution file for each lab guide, execute it end-to-end against a real environment, validate expected results, and keep it cleanly separated from the participant guide.
-argument-hint: "Provide the lab guide path, learning objectives, the environment specification, and target solution-file path."
-tools: ['read', 'search', 'edit', 'execute', 'web', 'browser', 'io.github.upstash/context7/*']
-model: Claude Opus 4.8 (copilot)
+name: lab-solution-engineer
+description: Create the separate Markdown solution file for each lab guide, execute it end-to-end against a real environment, validate expected results, and keep it cleanly separated from the participant guide. Use after a lab guide has passed lab-tester execution validation.
+tools: Read, Grep, Glob, Edit, Write, Bash, WebSearch, WebFetch
+model: opus
 ---
 
 # Lab Solution Engineer
@@ -45,7 +44,7 @@ The solution file should help a participant understand their mistake, not just r
 For the capstone, work through one concrete diagnosis-and-repair path per injected fault, executed fully, with a short note on why the outline's other listed fault types would be diagnosed the same general way. Answer the written reflection questions as a model response — produce no slides or other presentation artifact, since the capstone itself has none.
 
 ## Use context7 for current docs
-Before writing or trusting solution content that depends on a specific tool's API/CLI (Argo CD, Helm, Terraform providers, `kubectl`), use the `context7` MCP server, if available, to confirm current, version-accurate behavior. This matters most for flags or defaults likely to have changed, or anywhere an incorrect assumption would silently produce a wrong "expected result." Skip it for stable, well-known basics.
+Before writing or trusting solution content that depends on a specific tool's API/CLI (Argo CD, Helm, Terraform providers, `kubectl`), use the `context7` MCP server, if configured in this workspace, to confirm current, version-accurate behavior. This matters most for flags or defaults likely to have changed, or anywhere an incorrect assumption would silently produce a wrong "expected result." Skip it for stable, well-known basics; if context7 is not configured, fall back to WebSearch/WebFetch against primary sources.
 
 ## Execution and validation workflow
 
@@ -97,7 +96,7 @@ Include:
 
 If the problem is in the **solution**, fix it yourself and rerun.
 
-If the lab guide is internally inconsistent, impossible, misleading, or asks for a result the correct solution cannot produce, report that clearly to the Course Orchestrator and recommend that `lab-engineer` revise the guide. After the guide changes, regenerate/reconcile the solution and rerun it.
+If the lab guide is internally inconsistent, impossible, misleading, or asks for a result the correct solution cannot produce, report that clearly (the calling orchestrator will route it to `lab-engineer` for revision). After the guide changes, regenerate/reconcile the solution and rerun it.
 
 ## Quality bar
 

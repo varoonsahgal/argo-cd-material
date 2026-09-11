@@ -2,6 +2,14 @@
 
 This repository builds the complete courseware for **Intermediate Argo CD Operations**, a two-day, hands-on course for DevOps and platform engineers, from the outline in `argo-cd-outline.md`.
 
+## Multi-agent orchestration
+This repo was originally built around GitHub Copilot custom agents (`.github/agents/`) and Copilot skills (`.github/skills/`). Those have Claude Code equivalents:
+
+- **Subagents** live in [.claude/agents/](.claude/agents/): `course-architect`, `insight-generator`, `environment-engineer`, `lab-engineer`, `lab-tester`, `lab-solution-engineer`, `pedagogy-reviewer`, `course-reviewer`. Invoke them with the `Agent` tool (`subagent_type` = the agent's name), or let Claude pick automatically based on the task.
+- **Skills** live in [.claude/skills/](.claude/skills/): `lab-builder`, `challenge-designer`, `visual-teaching`, `screenshot-capture`, `assessment-designer`, `technical-source-check`, `terraform-lab-environment`, plus `course-orchestrator`.
+- To run the full build pipeline (the old Copilot "Course Orchestrator" agent), invoke the **`course-orchestrator` skill** (`/course-orchestrator`). It runs in the main conversation and drives the subagents above through all ten build phases — architecture, insight map, environment, guide authoring, execution validation, solution generation, pedagogy review, revision, and final quality review — because only the main thread can chain multiple subagent calls together.
+- The `.github/agents/` and `.github/skills/` directories are unchanged and still work for GitHub Copilot; the `.claude/` versions are Claude Code's copies, not a replacement. Keep both in sync if you edit the workflow going forward — there is no automatic sync between them.
+
 ## Source of truth
 - Treat `argo-cd-outline.md` as the authoritative scope, sequence, and timing for the course.
 - Do not silently add major topics, remove objectives, or change the two-day structure.
@@ -37,18 +45,18 @@ The outline's stated prerequisites (Kubernetes basics, Helm, `kubectl`, Git) des
 
 ## Screenshots and current UI accuracy
 - Every step that tells a participant to open, navigate, click, or observe something in the Argo CD (or Rancher) UI needs a screenshot, or a precisely specified placeholder if one cannot yet be captured. Use the `screenshot-capture` skill.
-- Prefer a screenshot captured live from this course's own provisioned Argo CD instance over any other source — it is guaranteed to match the version and configuration participants will actually see.
+- Prefer a screenshot captured live from this course's own provisioned Argo CD instance over any other source — it is guaranteed to match the version and configuration participants will actually see. Live capture requires a browser-automation MCP tool (e.g., Playwright MCP) to be configured in this workspace; if none is configured, fall back to the documented-source or capture-spec-placeholder path in the skill.
 - When citing an official documentation screenshot instead, credit the source and note the retrieval date and the Argo CD version it shows.
 - Never invent a description of a UI screen that has not been verified against a real instance or current official documentation.
 - State and pin the Argo CD version this course targets (from the environment specification) and keep screenshots and UI instructions consistent with that version — the UI and CLI have changed materially across major releases.
 
 ## Current-information rule
-Argo CD, its CLI, its UI, and its ecosystem (Helm, Kubernetes, ApplicationSet generators, progressive sync) change quickly. For any version-specific or time-sensitive technical claim — install commands, CLI flags, UI menu paths, Helm chart values, recommended HA sizing, current generator types — verify against primary sources before presenting it as current fact. Use the `technical-source-check` skill. Keep verification notes in review artifacts rather than cluttering participant-facing guides.
+Argo CD, its CLI, its UI, and its ecosystem (Helm, Kubernetes, ApplicationSet generators, progressive sync) change quickly. For any version-specific or time-sensitive technical claim — install commands, CLI flags, UI menu paths, Helm chart values, recommended HA sizing, current generator types — verify against primary sources (WebSearch/WebFetch, and the `context7` MCP server if configured) before presenting it as current fact. Use the `technical-source-check` skill. Keep verification notes in review artifacts rather than cluttering participant-facing guides.
 
 ## Technical content standards
 - Prefer current, supported Argo CD, Kubernetes, Helm, and Terraform practices over outdated tutorials.
 - Keep commands minimal, readable, and copy-runnable; show the full command, never a fragment the reader must reassemble.
-- Include expected output, sanity checks, and common failure notes for every executable step — show what a real terminal/UI would show, not an idealized guess (see the `lab-engineer` and `lab-tester` agents for how this is verified).
+- Include expected output, sanity checks, and common failure notes for every executable step — show what a real terminal/UI would show, not an idealized guess (see the `lab-engineer` and `lab-tester` subagents for how this is verified).
 - Avoid needless scope beyond what the outline and blueprint call for.
 
 ## Content structure
@@ -87,7 +95,7 @@ Argo CD, its CLI, its UI, and its ecosystem (Helm, Kubernetes, ApplicationSet ge
 - Both an instructor setup guide and a student setup guide are required, written to the same beginner-clarity bar as course content, with a verification/smoke-test step and expected output.
 - Every lab must include a reset path back to a known-good state; the capstone requires a documented, reversible fault-injection mechanism.
 
-See [content contract](../standards/content-contract.md), [pedagogy rubric](../standards/pedagogy-rubric.md), and [quality rubric](../standards/quality-rubric.md).
+See [content contract](standards/content-contract.md), [pedagogy rubric](standards/pedagogy-rubric.md), and [quality rubric](standards/quality-rubric.md).
 
 ## Quality bar
 - Depth matches the time the outline allots.

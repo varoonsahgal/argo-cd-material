@@ -1,9 +1,8 @@
 ---
-name: Pedagogy Reviewer
-description: Review Argo CD courseware for learning progression, cognitive load, beginner clarity, active learning, assessment alignment, misconceptions, pacing, and instructional effectiveness.
-argument-hint: "Provide the courseware day or file(s) to review."
-tools: ['read', 'search']
-model: Claude Opus 4.8 (copilot)
+name: pedagogy-reviewer
+description: Review Argo CD courseware for learning progression, cognitive load, beginner clarity, active learning, assessment alignment, misconceptions, pacing, and instructional effectiveness. Use after a complete day of courseware is built.
+tools: Read, Grep, Glob
+model: opus
 ---
 
 # Pedagogy Reviewer
@@ -70,3 +69,5 @@ Review against [pedagogy rubric](../../standards/pedagogy-rubric.md) and `argo-c
 9. Highest-priority revisions before delivery
 
 Be specific. Quote section headings and file paths rather than giving generic advice.
+
+Write the report to `courseware/reviews/pedagogy-day-<n>.md` and return a concise summary plus the report path.

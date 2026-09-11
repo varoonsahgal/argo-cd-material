@@ -1,330 +1,117 @@
-Build the complete course from @course-outline.md.
+Build the complete course from @argo-cd-outline.md.
 
-Use the outline as the authoritative source of truth and create all generated materials under `courseware/`.
+Use the outline as the authoritative source of truth and create all generated materials under `courseware/`. Everything you produce is Markdown — no notebooks, no slide decks, no presentation artifacts.
 
-Act as the **Courseware Orchestrator** and run the complete multi-agent course-development workflow. Do not behave as a single content-generation agent. Delegate work to the specialized agents, use workspace files as shared state, review their outputs, require revisions, and keep moving until the course is classroom-ready.
+Act as the **Course Orchestrator** and run the complete multi-agent course-development workflow. Do not behave as a single content-generation agent. Delegate work to the specialized agents, use workspace files as shared state, review their outputs, require revisions, and keep moving until the course is classroom-ready.
 
-# LABS ARE A MAJOR PRIORITY
+# THREE THINGS THIS COURSE MUST DELIVER
 
-This should be a **lab-heavy, experiment-heavy course**, not a lecture course with a few exercises attached.
+1. **Detailed challenge exercises that double as student guides.** Every outline session becomes one Markdown file that explains the concept in extreme, assume-nothing detail — beginner-clear, with grounded vocabulary, analogies, and amazing, memorable key takeaways — and, where the outline pairs it with a Lab, gives participants a real, guided hands-on exercise in that same file. Initial labs (Day 1, Labs 1-2) must be the most heavily guided, detailed, and insightful; later labs progressively ask for more independent thinking, and the capstone is deliberately diagnostic.
+2. **Screenshots, everywhere the UI matters.** Every step that tells a participant to open, click, or observe something in the Argo CD UI needs a real, version-accurate screenshot, or a precise capture-spec placeholder if one truly cannot be sourced yet. Use the web to capture these from the course's own live environment when possible, or from current official Argo CD documentation with attribution otherwise — and use the web to confirm every version-specific claim (CLI flags, UI layout, install commands, current best practice) before it lands in a guide.
+3. **Extreme setup detail.** Terraform-provisioned infrastructure, one virtual machine per student, each running the two-cluster (management + workload) Kubernetes topology with Argo CD preinstalled — plus extremely detailed, beginner-clear instructor and student setup guides. Terraform is written and locally validated, but real cloud infrastructure is only ever applied/destroyed by the instructor's own explicit action, never automatically.
 
-Default target, unless the outline or pacing clearly argues otherwise:
+# HANDS-ON WORK IS A MAJOR PRIORITY, NOT DECORATION
 
-- **3–4 substantial hands-on labs per day**
-- **2–4 additional micro-experiments, visual demos, debugging challenges, or prediction activities per day**
-- At least one meaningful hands-on interaction for every major technical concept
+This is a **hands-on, exercise-heavy operations course**, not a lecture course with a few exercises attached. Build exactly the sessions, labs, and capstone the outline specifies — do not inflate or deflate the lab count — but make every session non-passive:
 
-Do not inflate the lab count with tiny mechanical exercises. Prefer fewer substantial labs over meaningless activity, but actively look for opportunities to turn explanation into experimentation.
+- Concept-guide sessions (no dedicated Lab) still include 2-4 Quick Checks and one short, optional Try-It-Yourself micro-task.
+- Lab/Capstone sessions are full challenge exercises: guided walkthroughs, exercises ordered easiest to hardest, troubleshooting, and a self-checkable checkpoint.
 
-Labs must be **detailed enough that someone can run them without guessing**. They should include, where relevant:
+Guides must be **detailed enough that someone can work through them without guessing**. Where relevant, include:
 
 - Clear purpose and learning objectives
 - Expected duration
-- Environment and prerequisite checks
-- Exact setup steps
-- Detailed step-by-step instructions
-- Starter code rather than only completed code
-- Explanation of what each major step is doing
-- Prediction questions BEFORE important cells are run
-- Expected outputs, metric ranges, or sanity checks
-- Plots and visualizations where they improve understanding
-- Interpretation questions after results appear
+- Environment and prerequisite checks (grounded in the real environment Environment Engineer builds)
+- Exact commands and exact UI navigation, screenshotted
+- Explanation of what each major step is doing and why
+- Prediction questions before an important sync, deploy, or diagnostic reveal
+- Expected CLI output, sync/health status, and sanity checks — real, verified output, not invented
 - Deliberately broken examples and troubleshooting tasks
 - Common mistakes and recovery guidance
-- Challenge sections that require decisions rather than copying
-- Optional stretch experiments
+- Exercises that require decisions and diagnosis, not just copying
+- Optional stretch challenges, clearly marked
 - Key takeaways
-- Instructor notes where a live demonstration could fail or take too long
-- No completed answers in participant materials; every substantial lab must have a separate instructor-only solution artifact generated and tested after the participant lab passes QA
+- No completed answers in participant guides; every lab guide has a separate, executed, and validated solution file
 
-The preferred lab learning loop is:
+The preferred learning loop is:
 
-**Observe → Predict → Modify → Run → Visualize → Diagnose → Explain → Extend**
+**Observe -> Predict -> Change -> Sync/Apply -> Inspect -> Diagnose -> Explain -> Extend**
 
-Avoid labs whose primary activity is copying completed code and clicking Run.
+Avoid guides whose primary activity is copying completed commands and running them.
 
 # MAKE THE LABS INTERESTING
 
-Actively incorporate activities such as:
+Actively incorporate patterns such as (see the `challenge-designer` skill for the full set):
 
-- **Predict Before You Run** — participants commit to an expected result before execution
-- **Break It / Fix It** — intentionally broken models that must be diagnosed
-- **Model Detective** — diagnose a problem from learning curves, metrics, outputs, or errors without seeing all the code
-- **Make It Overfit** — deliberately produce overfitting and then rescue the model
-- **Learning Rate Roulette** — predict which training runs will converge, oscillate, diverge, or crawl
-- **Before/After Learning Curves** — every intervention must be justified using evidence
-- **Transfer Learning Race** — compare training from scratch with adapting a pretrained model
-- **Find the Data Leak** — investigate suspiciously good model performance
-- **You Get One Experiment** — select a single intervention under a compute/time constraint and defend it before running
-- **Data vs. Model Challenge** — determine whether improving data or architecture yields more value
-- **Accuracy Isn't Enough** — expose cases where aggregate accuracy hides dangerous or expensive failures
-- **Speed vs. Quality** — compare models with similar predictive quality but different latency, size, or memory requirements
-- **Mystery Model** — infer what went wrong from behavior and evidence
+- **Predict Before You Sync** — commit to an expected result before syncing or applying a change
+- **Break It / Fix It** — a deliberately broken values file, revision, or credential that must be diagnosed and repaired through Git
+- **Root-Cause Detective** — diagnose a problem from Argo CD/Kubernetes evidence alone, without seeing the underlying change
+- **Guardrail Bypass Attempt** — try an action an AppProject/RBAC boundary should block, confirm it's blocked, explain why
+- **Pattern Showdown** — implement the same requirement with ApplicationSet vs. App-of-Apps and compare operational impact
+- **You Get One Diagnostic Action** — under a multi-fault scenario, choose the single highest-information next step before changing anything
+- **Restore the Platform** — the capstone: a multi-layer failure participants must diagnose and repair using evidence, then explain the guardrail that would prevent recurrence
 
-Use competition carefully: reward reasoning, diagnosis, reproducibility, and explanation—not merely the highest metric.
+Use comparison and competition carefully: reward reasoning, diagnosis, and explanation — never merely speed.
 
 # ORCHESTRATION WORKFLOW
 
 ## 1. Course Architect
-Invoke the **Course Architect** first.
-
-Ask it to:
-- Analyze the entire outline
-- Create `courseware/00-course-blueprint.md`
-- Map objectives to lessons, labs, challenges, and assessments
-- Create a realistic timing map for all four days
-- Identify prerequisites and concept dependencies
-- Identify overloaded or underdeveloped sections
-- Identify where visual demonstrations are essential
-- Explicitly propose the lab plan for each day, including major labs and micro-experiments
-- Ensure the lab density is compatible with live delivery rather than simply adding content
-
-Do not proceed until the blueprint is coherent.
+Invoke first. Ask it to analyze the outline, create `courseware/00-course-blueprint.md`, assign each session to a concept guide or lab guide, validate timing, map objectives to evidence, define the environment specification, and define the screenshot plan and file tree. Do not proceed until the blueprint is coherent.
 
 ## 2. Insight Generator
-Invoke the **Insight Generator** after the blueprint exists.
+Invoke after the blueprint exists. Ask it to create `courseware/01-insight-map.md`: sticky explanations, visual revelations, counterintuitive results, engineering trade-offs, failure stories, current platform-engineering connections, and memorable key takeaways — with a verification note on any current-practice claim.
 
-Ask it to create `courseware/01-insight-map.md` containing:
-- Memorable explanations and analogies
-- Surprising but accurate insights
-- Strong visual metaphors
-- Real-world ML engineering connections
-- Frontier ML engineering connections where appropriate
-- Predict-before-you-run opportunities
-- Misconceptions worth deliberately exposing
-- Experiments that produce visually obvious outcomes
-- Interesting comparisons participants can debate before running them
-- Claims requiring current-source verification
-
-Use these insights to strengthen both lessons AND labs.
-
-## 3. Lesson Developer
-For each day/module, invoke the **Lesson Developer**.
-
-Provide:
-- The relevant outline section
-- Blueprint section
-- Insight-map recommendations
-- Associated lab plan
-- Target output path
-
-Ask it to create instructor-ready material that emphasizes:
-
-**Explain → Visualize → Predict → Experiment → Observe → Diagnose → Explain Why**
-
-Include:
-- Instructor talking points
-- Visuals/diagrams to create
-- Live demos
-- Questions to ask
-- Misconceptions
-- Transitions
-- Knowledge checks
-- Lab setup/context so the lab feels integrated into the lesson rather than bolted on afterward
-
-Avoid long stretches of passive explanation.
+## 3. Environment Engineer
+Invoke after the blueprint's environment spec exists, and before Lab Engineer starts writing. Ask it to build the Terraform (parameterized by student count), the bootstrap/reset/capstone-fault-injection scripts, and the instructor and student setup guides — and to locally validate all of it (`fmt`/`validate`/`plan`, `shellcheck`, a local `kind`/`k3d` smoke test where possible). Confirm it did not apply or destroy any real infrastructure.
 
 ## 4. Lab Engineer
-For every major hands-on activity, invoke the **Lab Engineer**.
+For every planned file, invoke Lab Engineer with the outline section(s), blueprint section, insight-map entries, the environment specification's concrete details (exact commands/cluster names/URLs), and the target path. It must produce one Markdown file per session — concept guide or lab guide as assigned — following the beginner-clarity mandate, the progressive-scaffolding rule, and the screenshot requirement.
 
-The Lab Engineer must create detailed, runnable, interesting labs—not sketches or high-level lab ideas.
+## 5. Lab Tester — EXECUTION IS REQUIRED
+After each lab guide is created, invoke Lab Tester. It must **actually execute the guide** against a real or local-sandbox environment, not just inspect it: run every command, reach every checkpoint, verify every screenshot against the real UI encountered, and confirm deliberate failures and their fixes work. Statuses: **PASS**, **PASS WITH NOTES**, **FAIL** (loops back to Lab Engineer and is retested), or **NOT EXECUTABLE** (documented external limitation). Do not let Course Reviewer substitute for this execution step.
 
-Where appropriate, require:
-- Notebook or runnable code artifact
-- Starter version
-- Lab guide
-- Expected results
-- Troubleshooting notes
-- Deliberate failure mode
-- Prediction prompts
-- Visual output
-- Challenge/extension
-- Runtime/environment notes
-
-Prefer small datasets and runtimes appropriate for a live class. Unless the course explicitly requires otherwise, keep labs practical for Google Colab and provide CPU fallbacks when reasonable.
-
-## 5. Lab Tester — PARTICIPANT EXECUTION IS REQUIRED
-After the Lab Engineer creates a lab, invoke the **Lab Tester**.
-
-The Lab Tester must **actually execute the lab**, not simply inspect the code.
-
-Require it to:
-- Test setup from a clean/minimally contaminated environment
-- Run notebooks in intended order
-- Execute the participant path
-- Validate imports and dependencies
-- Validate expected outputs and metric sanity ranges
-- Validate data/file paths
-- Validate CPU/GPU assumptions
-- Validate deliberate failures and documented recovery steps
-- Check runtime and memory practicality
-- Check Google Colab practicality where applicable
-- Confirm prediction questions occur before answers/results are revealed
-- Confirm challenges are solvable
-- Rate the lab's interestingness
-- Create a detailed validation report under `courseware/reviews/`
-
-A lab that only *looks* correct is not complete.
-
-Use these statuses:
-
-**PASS** — classroom-ready  
-**PASS WITH NOTES** — executable with non-blocking improvements  
-**FAIL** — likely to block participants or misses the objective  
-**NOT EXECUTABLE** — could not fully run because of a documented external limitation
-
-If a required lab receives **FAIL**:
-
-**Lab Tester → report → Lab Engineer fixes → Lab Tester retests**
-
-Repeat until it passes or an external limitation is explicitly documented.
-
-Do not allow the Course Reviewer to substitute for Lab Tester execution.
-
-## 6. Lab Solution Engineer — SEPARATE INSTRUCTOR SOLUTIONS + EXECUTION
-After a participant lab passes Lab Tester validation, invoke the **Lab Solution Engineer**.
-
-Every substantial lab must have a separate instructor-only solution artifact. Participant materials must never contain completed answers, hidden solution code, answer keys, or instructor-only notes.
-
-Require the Lab Solution Engineer to:
-- Read the final participant lab and its objectives
-- Create the solution under `courseware/instructor-solutions/<day-or-module>/`
-- Mirror the participant lab name using a clear suffix such as `-SOLUTION`
-- Complete every TODO, exercise, challenge, debugging task, prediction question, and interpretation question
-- Explain why each important answer is correct
-- Include expected outputs, plots, metric ranges, and qualitative behavior
-- Include common wrong answers and misconceptions
-- Include instructor demo/recovery notes
-- Note acceptable alternative solutions where appropriate
-- Actually execute the complete solution end-to-end
-- Restart and rerun from clean state when practical
-- Validate imports, dependencies, file paths, tensor shapes, outputs, plots, metrics, runtime, and CPU/GPU assumptions
-- Validate deliberate failures and the documented fix
-- Confirm the solution reaches the stated learning objective
-- Confirm no answers leaked into participant-facing files
-- Write `courseware/reviews/solution-validation-<lab-name>.md`
-
-Use statuses:
-
-**PASS** — complete, executable, separated, instructor-ready  
-**PASS WITH NOTES** — works with non-blocking recommendations  
-**FAIL** — incorrect/incomplete, execution failure, missing answers, or answer leakage  
-**NOT EXECUTABLE** — external limitation prevents full execution and is documented
-
-If the solution itself fails:
-
-**Lab Solution Engineer → fix → rerun**
-
-If the correct solution exposes a flaw in the participant lab:
-
-**Lab Solution Engineer → Orchestrator → Lab Engineer fixes participant lab → Lab Tester retests → Lab Solution Engineer reconciles and reruns solution**
-
-A required lab is not complete until:
-
-**Participant Lab PASS + Instructor Solution PASS**
+## 6. Lab Solution Engineer — SEPARATE SOLUTIONS + EXECUTION
+After a lab guide passes Lab Tester, invoke Lab Solution Engineer. It creates the separate solution file under `courseware/solutions/`, mirroring the guide's name with a `-SOLUTION.md` suffix, answering every exercise with reasoning and expected results — then **executes it end-to-end** and verifies no answers leaked into the participant guide. A required lab is not complete until **Lab Guide PASS + Solution PASS**. If the solution exposes a flaw in the guide, route back through Lab Engineer and Lab Tester before reconciling the solution.
 
 ## 7. Pedagogy Reviewer
-After each complete day or major module has lesson material and validated labs, invoke the **Pedagogy Reviewer**.
-
-Review for:
-- Cognitive load
-- Concept sequencing
-- Scaffolded difficulty
-- Engagement
-- Active learning
-- Quality and frequency of labs
-- Whether labs reinforce the lesson objectives
-- Whether participants must think, predict, diagnose, and explain
-- Whether there is too much passive lecture between activities
-- Whether competition strengthens learning rather than distracting from it
-- Whether the course gradually removes scaffolding as capability grows
-
-Require actionable findings using labels such as:
-
-**KEEP / CUT / SHORTEN / MOVE / ADD LAB / ADD ACTIVITY / ADD VISUAL / ADD PRACTICE / CLARIFY**
-
-Apply worthwhile changes rather than merely storing the report.
+After each day is built and its labs validated, invoke Pedagogy Reviewer against `standards/pedagogy-rubric.md`. Require actionable findings using: **KEEP / CUT / SHORTEN / MOVE / ADD ACTIVITY / ADD VISUAL / ADD PRACTICE / CLARIFY**. Apply worthwhile changes rather than merely storing the report.
 
 ## 8. Course Reviewer
-After all days have been developed, lab-tested, pedagogy-reviewed, and revised, invoke the **Course Reviewer**.
+After both days are built, tested, reviewed, and revised, invoke Course Reviewer against `standards/quality-rubric.md` to review the complete `courseware/` tree — including `environment/` and `assets/` — for scope alignment, technical accuracy and currency, lab integrity, environment readiness, visual/screenshot completeness, cross-day consistency, and delivery readiness. Write `courseware/99-final-quality-report.md`.
 
-Review the complete `courseware/` tree for:
-- Alignment to `course-outline.md`
-- Technical accuracy
-- Modern ML/deep-learning practices
-- Coherence across four days
-- Timing and density
-- Repetition
-- Missing prerequisite concepts
-- Missing hands-on practice
-- Lab variety
-- Participant lab validation status
-- Instructor solution coverage and solution validation status
-- Clean separation between participant and instructor artifacts
-- Quality of assessments
-- Unsupported or time-sensitive claims
-- Whether the final capstone genuinely synthesizes the course
+If blocking/high-severity issues remain, invoke the appropriate agent, fix them, and rerun the required review/test.
 
-Write `courseware/99-final-quality-report.md`.
+# MODERN PLATFORM-ENGINEERING CONNECTIONS
 
-If blocking/high-severity issues remain, invoke the appropriate agent, fix them, and run the required review/test again.
-
-# MODERN ML ENGINEERING CONNECTIONS
-
-Throughout the course, connect foundational concepts to representative problems an ML engineer at a frontier AI organization might work on, such as:
-
-- Training and post-training
-- Evaluation and graders
-- Reinforcement learning
-- Model debugging
-- Data quality and data pipelines
-- Fine-tuning and transfer learning
-- Model behavior analysis
-- Interpretability
-- Safety evaluations
-- Training efficiency
-- Inference latency and throughput
-- GPU utilization and memory constraints
-- Experiment design
-- Diagnosing regressions
-- Improving reasoning, coding, or tool-use capabilities
-
-Keep these grounded and understandable. They should make foundational concepts feel relevant without turning the course into an LLM-only course.
+Throughout the course, connect fundamentals to problems a platform/DevOps engineer runs into in current practice: progressive delivery, policy-as-code guardrails, multi-cluster fleet management, internal developer platforms, incident response, and — briefly, only where the outline calls for it — how Argo CD relates to Argo Workflows. Keep these grounded and understandable; do not turn the course into a broader GitOps-tooling survey.
 
 # QUALITY BAR
 
-Every major section should help answer:
+Every guide should help answer:
 
-- What is this?
-- Why does it matter?
-- How does it work?
-- Can I see it?
-- Can I predict what will happen?
-- Can I experiment with it?
-- What can go wrong?
-- Can I diagnose the problem from evidence?
-- How would an ML engineer approach it?
+- What is this, in plain language?
+- Why does it matter operationally?
+- Can I see it (a diagram or a real screenshot)?
+- Can I predict what will happen before I act?
+- Can I try it myself?
+- What can go wrong, and how would I know?
+- Can I diagnose the problem from evidence alone?
 - What should I remember tomorrow?
 
-Favor:
-
-**Show it → Predict it → Break it → Fix it → Measure it → Explain it**
+Favor: **Show it -> Predict it -> Try it -> Break it -> Fix it -> Explain it**
 
 # FIRST ACTION
 
-Do NOT generate all four days in one giant pass.
+Do NOT generate both days in one giant pass.
 
 Begin by:
 
-1. Reading and analyzing `course-outline.md`.
-2. Invoking the Course Architect to create the four-day blueprint and detailed lab/activity map.
+1. Reading and analyzing `argo-cd-outline.md`.
+2. Invoking the Course Architect to create the blueprint, environment specification, and file/screenshot plan.
 3. Invoking the Insight Generator.
-4. Presenting a concise implementation plan that shows:
-   - what each agent will produce,
-   - the proposed labs for each day,
-   - which labs will be executed by Lab Tester,
-   - and the review/revision loop.
-5. Then begin full development of **Day 1**.
-6. Continue through the workflow systematically.
+4. Invoking the Environment Engineer to stand up the environment specification as Terraform and setup guides.
+5. Presenting a concise implementation plan that shows: what each agent will produce, the proposed guide/lab file list for Day 1, and the review/revision loop.
+6. Then begin full development of **Day 1**.
+7. Continue through the workflow systematically into Day 2.
 
-Treat this as a complete course-development project. The course is not finished until the content is coherent, the pedagogy has been reviewed, and the required labs have actually been executed and validated.
+Treat this as a complete course-development project. The course is not finished until the content is coherent, the pedagogy has been reviewed, the environment has been validated, and every required lab guide has actually been executed and validated alongside its solution.

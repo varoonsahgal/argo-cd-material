@@ -1,43 +1,33 @@
 # Pedagogy Rubric
 
-Score each dimension from 1 to 5.
+Used by `pedagogy-reviewer` to score courseware 1-5 on each dimension. A 5 is exceptional and rare; a 3 is solid and shippable; below 3 needs revision before delivery.
 
-## 1. Learning progression
-- Concepts appear after their prerequisites.
-- Complexity increases deliberately.
-- Transitions explain why the next topic follows.
+## Progression
+5: Every concept is used only after it has been taught; the sequence feels inevitable. 1: Concepts are referenced before they are introduced, or the order feels arbitrary.
 
-## 2. Cognitive load
-- New ideas are chunked appropriately.
-- Dense mathematical or technical sections include intuition and examples.
-- Optional nuance is separated from core understanding.
+## Cognitive load and beginner clarity
+5: No unexplained jargon anywhere; every acronym and product-specific term is grounded on first use; one idea per step. 1: Multiple new ideas per paragraph, or language that assumes the reader already remembers Kubernetes/Helm/Git details the outline lists as prerequisites.
 
-## 3. Active learning
-- Participants regularly predict, inspect, diagnose, modify, compare, and explain.
-- Activities require decisions rather than passive execution.
+## Active learning
+5: Participants predict, diagnose, compare, or decide at frequent, well-spaced intervals; no long passive stretches. 1: Mostly narrated reading with occasional copy/paste commands.
 
-## 4. Visual reasoning
-- Important invisible processes are made visible.
-- Visuals have a teaching purpose, not decorative value.
+## Retrieval and reinforcement
+5: Earlier concepts (e.g., sync vs. health status) resurface in new contexts (troubleshooting, capstone) rather than being taught once and dropped. 1: Concepts appear exactly once.
 
-## 5. Retrieval and reinforcement
-- Important ideas reappear in new contexts.
-- Knowledge checks revisit the right concepts at the right intervals.
+## Transfer
+5: Exercises require applying a concept to a scenario not identical to the worked example (e.g., diagnosing a different failure than the one demonstrated). 1: Exercises are the worked example with different variable names.
 
-## 6. Transfer
-- Participants practice applying concepts to unfamiliar scenarios.
-- Examples connect to realistic engineering decisions.
+## Misconceptions addressed
+5: Common wrong mental models (e.g., "OutOfSync means broken," "Argo CD runs `helm upgrade`") are named and corrected explicitly. 1: Misconceptions are never named, only implicitly avoided.
 
-## 7. Misconceptions
-- Common wrong mental models are anticipated and corrected.
+## Assessment alignment
+5: Quick Checks, exercises, and checkpoints test the stated learning objective through diagnosis/application/prediction. 1: Checks are vocabulary recall answerable without understanding.
 
-## 8. Assessment alignment
-- Assessments test the stated objectives.
-- Questions emphasize explanation, diagnosis, and application over vocabulary recall.
+## Pacing
+5: Content volume matches the outline's allotted minutes with room for questions and debrief. 1: A session/lab cannot realistically be completed in its allotted time, or is too thin to fill it meaningfully.
 
-## 9. Engagement
-- The course contains curiosity, challenge, visible feedback, and meaningful choices.
+## Engagement and visual support
+5: Every invisible process (reconciliation, ownership, drift, sync waves) has a diagram or screenshot; challenges reward reasoning, not speed. 1: Text-only description of visual/UI-heavy processes; activities are trivia or unearned competition.
 
-## 10. Pacing
-- The estimated teaching time is credible.
-- The course allows time for questions, experiments, and debriefs.
+## Report requirement
+For each dimension below 4, `pedagogy-reviewer` must cite the specific file and section, not a general impression.
