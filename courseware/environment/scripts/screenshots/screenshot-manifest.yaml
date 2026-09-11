@@ -841,51 +841,83 @@ shots:
     app: argocd
     auth: admin
     route: /settings/projects/team-a
-    state: "Project team-a detail"
-    produced_by: "lab-05 E1"
+    state: "Project team-a detail (Summary tab)"
+    produced_by: "lab-05 E1 (after kubectl apply of projects/team-a.yaml)"
     fidelity: full
+    # Confirmed live on v3.5.2 (lab-tester, 2026-09-11): Destinations and the
+    # resource allow-lists sit below the fold at 900px, so this shot uses a
+    # taller viewport. Boxes 2/4/7 = Source repositories / Destinations /
+    # cluster + namespace resource allow/deny lists.
+    viewport:
+      height: 1900
     highlight:
       intent: "sources, destinations, cluster-resource list"
-      selector: ".project-details"
+      selector: ".argo-container > .white-box:nth-child(2), .argo-container > .white-box:nth-child(4), .argo-container > .white-box:nth-child(7)"
 
   - id: SS-L5-03
     guide: lab-05
     filename: day-2/lab-05-03-destination-rejected.png
     app: argocd
     auth: admin
-    route: /applications/team-a-guestbook
-    state: "Application error or condition"
-    produced_by: "lab-05 E3 part a"
-    fidelity: panel
+    route: /applications/team-a-wrong-dest
+    state: "Application conditions panel on the wrong-destination Application"
+    produced_by: "lab-05 E3 part a (throwaway team-a-wrong-dest applied, never synced)"
+    # Confirmed live on v3.5.2 (lab-tester, 2026-09-11). The real condition is
+    # InvalidSpecError "... do not match any of the allowed destinations in
+    # project 'team-a'" (NOT "is not permitted in project"). The panel opens
+    # from the APP CONDITIONS "1 Error" item; viewport shot keeps its title.
+    wait_until: load
+    actions:
+      - click: ".application-status-panel__conditions"
+      - wait_for: ".application-conditions__condition"
+      - wait_ms: 800
+    fidelity: full
     highlight:
-      intent: "'not permitted in project' message"
-      selector: ".application-conditions"
+      intent: "InvalidSpecError destination message naming project team-a"
+      selector: ".application-conditions__condition"
 
   - id: SS-L5-04
     guide: lab-05
     filename: day-2/lab-05-04-cluster-scoped-blocked.png
     app: argocd
     auth: admin
-    route: /applications/team-a-guestbook
-    state: "Sync result or resource status"
-    produced_by: "lab-05 E3 part b"
-    fidelity: panel
+    route: /applications/team-a-clusterrole
+    state: "Last-sync operation panel for the cluster-scoped attempt"
+    produced_by: "lab-05 E3 part b (throwaway team-a-clusterrole, path attempts/cluster-scoped, after argocd app sync)"
+    # Confirmed live on v3.5.2 (lab-tester, 2026-09-11). Because the workload
+    # cluster Secret is namespaced (clusterResources: "false"), the refusal is
+    # Phase Error / "ComparisonError: Failed to load live state: cluster level
+    # ClusterRole ... can not be managed when in namespaced mode" -- raised by
+    # Argo CD before any write, NOT an AppProject "not permitted" message.
+    wait_until: load
+    actions:
+      - click: '.application-status-panel__item:has-text("LAST SYNC") >> text=Sync error'
+      - wait_for: ".sliding-panel--opened .white-box__details-row"
+      - wait_ms: 800
+    fidelity: full
     highlight:
-      intent: "ClusterRole not permitted"
-      selector: ".application-operation-state"
+      intent: "Phase Error and the namespaced-mode ClusterRole message"
+      selector: ".sliding-panel--opened .white-box__details-row:nth-child(2), .sliding-panel--opened .white-box__details-row:nth-child(3)"
 
   - id: SS-L5-05
     guide: lab-05
     filename: day-2/lab-05-05-argocd-rbac-denied.png
     app: argocd
     auth: team-a-dev
-    route: /applications/team-a-guestbook
-    state: "Sync attempt as team-a-dev"
-    produced_by: "lab-05 E4 part a"
+    route: /applications/storefront-prod-workload
+    state: "storefront-prod-workload opened as team-a-dev (no get permission)"
+    produced_by: "lab-05 E4 part a (CP-lab-05 + E1 RBAC grant live)"
+    # Confirmed live on v3.5.2 (lab-tester, 2026-09-11): team-a-dev cannot GET
+    # a storefront app, so there is no Sync button to press. The page shows
+    # "Failed to load data, please try again." plus an error toast "Unable to
+    # load data: permission denied". The toast auto-closes; capture quickly.
+    wait_until: load
+    actions:
+      - wait_for: ".Toastify__toast--error"
     fidelity: full
     highlight:
-      intent: "permission-denied notification"
-      selector: ".notifications-container"
+      intent: "the permission-denied toast (page also shows Failed to load data)"
+      selector: ".Toastify__toast--error"
 
   - id: SS-L5-06
     guide: lab-05

@@ -136,6 +136,16 @@ seed_one() {
     git -C "${work}" tag -f "${tag}" >/dev/null
   done
 
+  # Release tag pinned by content (blueprint 8.7): storefront-gitops
+  # envs/prod/config.yaml sets targetRevision: storefront-1.0.0. Without this tag
+  # storefront-prod-workload shows ComparisonError "unable to resolve
+  # 'storefront-1.0.0' to a commit SHA" at CP-lab-05 and later. The repo has no
+  # checkpoint overlays, so cp-baseline is the known-good 1.0.0 chart. The local
+  # mirror carries the tag, so every reset-lab.sh re-pushes it (--tags).
+  if [ "${repo}" = "storefront-gitops" ]; then
+    git -C "${work}" tag -f storefront-1.0.0 cp-baseline >/dev/null
+  fi
+
   # main starts at cp-baseline; reset-lab.sh advances it per checkpoint.
   # Use checkout -B so this succeeds even though 'main' is the checked-out branch
   # (git refuses `branch -f` on the current branch).

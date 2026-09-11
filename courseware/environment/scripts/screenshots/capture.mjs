@@ -159,17 +159,45 @@ async function applyHighlight(page, selector, hl) {
 }
 
 // ---------------------------------------------------------------------------
+// Optional per-shot UI actions, run after the page loads and before the
+// highlight. Needed for states that only exist after an interaction (a sliding
+// panel, a permission-denied notification). Each step is exactly one of:
+//   { click: "<css or playwright selector>" }   click the first match
+//   { fill: "<selector>", value: "<text>" }     type into an input
+//   { wait_for: "<selector>" }                  wait until visible (15 s)
+//   { wait_ms: <n> }                            fixed pause
+// ---------------------------------------------------------------------------
+async function runActions(page, actions) {
+  for (const a of actions || []) {
+    if (a.click) await page.locator(a.click).first().click({ timeout: 15000 });
+    else if (a.fill) await page.locator(a.fill).first().fill(String(a.value ?? ""), { timeout: 15000 });
+    else if (a.wait_for) await page.locator(a.wait_for).first().waitFor({ state: "visible", timeout: 15000 });
+    else if (a.wait_ms) await page.waitForTimeout(Number(a.wait_ms));
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Capture one shot.
 // ---------------------------------------------------------------------------
 async function captureShot(context, shot, cfg, baseUrl) {
   const page = await context.newPage();
+  // Optional per-shot viewport override (e.g. a taller page for long panels).
+  if (shot.viewport) {
+    await page.setViewportSize({
+      width: shot.viewport.width || cfg.viewport.width,
+      height: shot.viewport.height || cfg.viewport.height,
+    });
+  }
   const outPath = join(REPO_ROOT, cfg.output_root, shot.filename);
   await mkdir(dirname(outPath), { recursive: true });
 
   const url = `${baseUrl}${shot.route || "/"}`;
-  await page.goto(url, { waitUntil: "networkidle", timeout: 45000 });
+  // Application detail pages hold a live event stream open, so they never reach
+  // "networkidle"; such shots set `wait_until: load` in the manifest.
+  await page.goto(url, { waitUntil: shot.wait_until || "networkidle", timeout: 45000 });
   // Argo CD's UI hydrates after the initial load; give it a beat to render.
   await page.waitForTimeout(1500);
+  await runActions(page, shot.actions);
 
   const selector = shot.highlight ? shot.highlight.selector : null;
   const highlightResult = await applyHighlight(page, selector, cfg.highlight);
