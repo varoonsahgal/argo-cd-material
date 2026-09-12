@@ -11,6 +11,10 @@ spec:
       app.kubernetes.io/name: hello-reconcile
   template:
     metadata:
+      annotations:
+        # Changing the message updates the Pod template, triggering a rollout.
+        # Replacement Pods read the updated ConfigMap as environment variables.
+        course.message: {{ .Values.message | quote }}
       labels:
         app.kubernetes.io/name: hello-reconcile
     spec:
@@ -33,7 +37,7 @@ spec:
           livenessProbe:
             httpGet:
               path: /healthz
-              port: http
+              port: 9898
             initialDelaySeconds: 5
             periodSeconds: 10
           resources:
